@@ -1,0 +1,37 @@
+<form [formGroup]="documentForm" class="kt-form">
+    <div class="row">
+        <div class="col-md-6">
+            <mat-form-field class="mat-form-field-fluid">
+                <input matInput placeholder="Name" formControlName="name">
+                <mat-error>
+                    Name is
+                    <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <mat-form-field>
+                <ngx-mat-file-input formControlName="document" placeholder="Document Upload"  accept=".jpg,.jpeg,.pdf,.zip" ></ngx-mat-file-input>
+                <mat-error *ngIf="isControlHasError('document','required')">
+                    Document is
+                    <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="isControlHasError('document','error')">
+                    {{error}}
+                </mat-error>
+            </mat-form-field>            
+        </div>
+    </div>
+    <div>
+        <div class="row text-right">
+            <div class="col-lg-12">
+                <button type="button" mat-raised-button [mat-dialog-close]="" cdkFocusInitial matTooltip="Cancel">
+                    Cancel
+                </button>&nbsp;
+                <button type="button" mat-raised-button color="primary" (click)="onSubmit()" [disabled]="viewLoading" matTooltip="Upload Document">
+                    Upload
+                </button>
+            </div>
+        </div>    
+    </div>            
+</form>

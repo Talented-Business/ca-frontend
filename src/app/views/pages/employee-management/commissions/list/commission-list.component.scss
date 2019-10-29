@@ -1,0 +1,15 @@
+.mat-table__wrapper .mat-table{
+    min-width: auto;
+    .mat-row{
+        cursor: pointer;
+    }
+    .selected{
+        background-color: greenyellow;
+    }
+}
+.commissions .table{
+    margin-top: 10px;
+    td{
+        vertical-align: middle;
+    }
+}

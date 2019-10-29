@@ -1,0 +1,162 @@
+<kt-portlet>
+	<kt-portlet-header [sticky]="true" [title]="getComponentTitle(employee)" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a (click)="goBackWithoutId()" class="btn btn-secondary kt-margin-r-10"  mat-raised-button matTooltip="Back to the employees list">
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<div *ngIf="employee">
+			<div  style="border:1px solid rgba(0, 0, 0, 0.1);">
+				<div class="kt-form kt-form--label-right mt-4">
+					<div class="row">
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">First Name:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.first_name}}
+							</div>
+						</div>
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Last Name:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.last_name}}
+							</div>
+						</div>
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">ID Number:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.id_number}}
+							</div>
+						</div>
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Gender:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.gender}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Date of Birth:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.birthday}}
+							</div>
+						</div>
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Nationality:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.nationality}}
+							</div>
+						</div>
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Home phone number:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.home_phone_number}}
+							</div>
+						</div>
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Mobile phone number:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.mobile_phone_number}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Personal Email:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.personal_email}}
+							</div>
+						</div>
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Marital status:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.marital}}
+							</div>
+						</div>
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Skype ID:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.skype_id}}
+							</div>
+						</div>
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Referal Name:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.referal_name}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Current location:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.country + ' / ' + employee.state}}
+							</div>
+						</div>
+						<div class="col-md-3 form-group row no-gutters">
+							<label class="col-6">Home Address:</label>
+							<div class="col-5 ml-4 font-weight-bold">
+								{{employee.home_address}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="ml-4 mt-4 mb-4">
+					<h4>DOCUMENTS</h4>
+					<div class="row ">
+						<div class="col-md-3" *ngFor="let document of employee.documents">
+							<div *ngIf="checkImage(document.path)">
+								<label class="text-center font-weight-bold">{{document.name}}</label><br>
+								<div [ngStyle]="{'background-image': 'url(' + hostingUrl + 'storage/' + document.path + ')'}" class="image-background" (click)="openImage(document.path)"></div>
+							</div>	
+							<div *ngIf="checkPdf(document.path)">
+								<label class="text-center font-weight-bold">{{document.name}}</label><br>
+								<a href="{{hostingUrl}}storage/{{document.path}}" target="_blank">
+									<img src="assets/media/files/pdf.svg" class="medium-image-size">
+								</a>
+							</div>
+							<div *ngIf="checkZip(document.path)">
+								<label class="text-center font-weight-bold">{{document.name}}</label><br>
+								<a href="{{hostingUrl}}storage/{{document.path}}" target="_blank">
+									<img src="assets/media/files/zip.svg" class="medium-image-size">
+								</a>
+							</div>
+						</div>	
+					</div>
+				</div>	
+			</div>
+
+			<div class="mt-5" style="border:1px solid rgba(0, 0, 0, 0.1);">
+				<h4 class="mt-4 ml-4">Onboarding Process</h4>
+				<hr>
+				<div class="form-group row ml-4">
+					<div class="col-md-3">
+						<mat-icon *ngIf="employee.have_computer">check_circle</mat-icon>
+						<mat-icon *ngIf="employee.have_computer==false">clear</mat-icon>
+						<span style="vertical-align: top;">Laptop / Computer</span>
+					</div>
+					<div class="col-md-3">
+						<mat-icon *ngIf="employee.have_monitor">check_circle</mat-icon>
+						<mat-icon *ngIf="employee.have_monitor==false">clear</mat-icon>
+						<span style="vertical-align: top;">Extra Monitor</span>
+					</div>
+					<div class="col-md-3">
+						<mat-icon *ngIf="employee.have_headset">check_circle</mat-icon>
+						<mat-icon *ngIf="employee.have_headset==false">clear</mat-icon>
+						<span style="vertical-align: top;">Headset</span>
+					</div>
+					<div class="col-md-3">
+						<mat-icon *ngIf="employee.have_ethernet">check_circle</mat-icon>
+						<mat-icon *ngIf="employee.have_ethernet==false">clear</mat-icon>
+						<span style="vertical-align: top;">Ethernet Adapther</span>
+					</div>
+				</div>	
+			</div>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>
+	

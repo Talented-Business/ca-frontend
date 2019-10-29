@@ -1,0 +1,33 @@
+<div class="kt-widget14">
+	<div class="kt-widget14__header kt-margin-b-30">
+		<h3 class="kt-widget14__title">{{title}}</h3>
+		<span class="kt-widget14__desc">{{desc}}</span>
+	</div>
+	<div class="kt-widget14__chart" style="height:320px;">
+		<canvas #chart></canvas>
+	</div>
+	<div>
+		<table class="table border">
+			<thead>
+				<tr>
+					<th>Description</th>
+					<th *ngFor="let label of data.labels">{{label}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						Amount Invoiced
+					</td>
+					<td *ngFor="let amount of data.datasets[0].data">{{amount}}</td>
+				</tr>
+				<tr>
+					<td>
+						Management Fee
+					</td>
+					<td *ngFor="let amount of data.datasets[1].data">{{amount}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>		
+</div>

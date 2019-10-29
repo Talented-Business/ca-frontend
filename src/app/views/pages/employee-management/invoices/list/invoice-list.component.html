@@ -1,0 +1,113 @@
+<kt-portlet>
+    <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+    <kt-portlet-header [class]="'kt-portlet__head--lg'" [viewLoading$]="dataSource.loading$">
+        <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+
+        <ng-container ktPortletTitle>
+            <h3 class="kt-portlet__head-title">
+                <span>Invoices</span>
+            </h3>    
+            <div style="display: flex;align-items: center;padding:1rem">
+                <div style="padding: 0 0.5rem 0 0;font-size: 1rem;font-weight: 500;color: #959cb6;">Total {{invoiceTotal}}</div>
+                <div class="kt-margin-bottom-10-mobile ml-4">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Search" #searchInput placeholder="Search">
+                    </mat-form-field>
+                </div>
+            </div>    
+            <!-- end::FILTERS -->
+
+            <!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+            <!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+        </ng-container>
+        <ng-container ktPortletTools>
+            <a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="add()" mat-raised-button matTooltip="Add Invoice">
+                <span class="kt-hidden-mobile">Add Invoice</span>
+            </a>             
+        </ng-container>        
+    </kt-portlet-header>
+    <!-- end::Header -->
+
+    <kt-portlet-body>
+
+        <!-- MATERIAL TABLE | Binded to datasources -->
+        <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+        <div class="mat-table__wrapper">
+            <mat-table class="lmat-elevation-z8"
+                #table
+                [dataSource]="dataSource"
+                matSort
+                #sort1="matSort"
+                matSortActive="created_at"
+                matSortDirection="desc"
+                matSortDisableClear>
+                <!-- Checkbox Column -->
+
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                    <mat-cell *matCellDef="let invoice">{{invoice.id}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="date">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+                    <mat-cell *matCellDef="let invoice">{{invoice.invoicing_date}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="company">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Company</mat-header-cell>
+                    <mat-cell *matCellDef="let invoice">{{invoice.company.name }}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>amount</mat-header-cell>
+                    <mat-cell *matCellDef="let invoice">{{invoice.total }}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let invoice">
+                        <span class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{ getItemCssClassByStatus(invoice.status) }} kt-badge--wide">{{  getItemStatusString(invoice.status) }}</span>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let invoice">
+                        <ng-template ngxPermissionsOnly="edit invoice">
+                            <button mat-icon-button color="primary" matTooltip="View Invoice" (click)="view(invoice)">
+                                <mat-icon>visibility</mat-icon>
+                            </button>&nbsp;
+                        </ng-template>    
+                        <ng-template ngxPermissionsOnly="edit invoice">
+                            <button mat-icon-button color="primary" matTooltip="Edit" (click)="edit(invoice)" *ngIf="['Draft','Recheck'].includes(invoice.status)">
+                                <mat-icon>edit</mat-icon>
+                            </button>&nbsp;
+                            <button mat-icon-button color="secondary" matTooltip="Mark Paid" (click)="paid(invoice)" *ngIf="['Invoice'].includes(invoice.status)">
+                                <mat-icon>check</mat-icon>
+                            </button>&nbsp;
+                        </ng-template>    
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+            <!-- Message for empty data  -->
+            <div class="mat-table__message" *ngIf="invoiceTotal == 0">No records found</div>
+            <div class="mat-table__message" *ngIf="dataSource.isPreloadTextViewed$ | async">Please wait....</div>
+        </div>
+
+        <!-- start: BOTTOM -->
+        <div class="mat-table__bottom">
+            <!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+            <mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+            <!-- MATERIAL PAGINATOR | Binded to dasources -->
+            <!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+        </div>
+        <!-- end: BOTTOM -->
+    </kt-portlet-body>
+    <!-- end::Body -->
+
+</kt-portlet>

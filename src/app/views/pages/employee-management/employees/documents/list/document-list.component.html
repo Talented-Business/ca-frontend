@@ -1,0 +1,35 @@
+<div class="mat-table__wrapper">
+    <button type="button" (click)="add()" class="btn btn-primary pull-right" mat-raised-button color="primary" >New Document</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Uploaded Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let document of employee.documents">
+                <td>{{document.name}}</td>
+                <td>{{document.created_at}}</td>
+                <td>
+                    <button mat-icon-button color="primary" matTooltip="edit document" (click)="editDocument(document)">
+                        <mat-icon>edit</mat-icon>
+                    </button>&nbsp;
+                    <button mat-icon-button color="primary" *ngIf="checkImage(document.path)" matTooltip="view document" (click)="openImage(document.path)">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" *ngIf="checkImage(document.path)==false" matTooltip="view document">
+                        <a href="{{hostingUrl}}storage/{{document.path}}" target="_blank" style="vertical-align: sub;"><mat-icon>visibility</mat-icon></a>                            
+                    </button>&nbsp;        
+                    <button mat-icon-button color="warn"  matTooltip="delete document" (click)="deleteDocument(document)">
+                        <mat-icon>clear</mat-icon>
+                    </button>&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 *ngIf="employee.documents.length==0">No Documents</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

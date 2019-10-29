@@ -1,0 +1,201 @@
+<div class="kt-portlet"
+	[ngClass]="{ 'kt-portlet--body-progress kt-portlet--body-progress-overlay' : viewLoading }">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{getTitle()}}</h3>
+        </div>
+        <div class="pull-right">
+            <label class="mr-4">
+                Please select if you approve this applicant
+            </label>
+            <button type="button" mat-raised-button color="primary" (click)="updateStatus('approved')" *ngIf="proposal.status == 'inreview' || proposal.status == 'declined'">APPROVE</button>&nbsp;
+            <button type="button" mat-raised-button color="warn" (click)="updateStatus('declined')" *ngIf="proposal.status == 'inreview'">DECLINE</button>&nbsp;
+            <button type="button" mat-raised-button [mat-dialog-close]="data.animal" cdkFocusInitial >Close</button>
+        </div>
+	</div>
+    <div class="mr-4 ml-4 mt-4 mb-4">
+        <div *ngIf="proposal.employee">
+            <div class="kt-form kt-form--label-right">
+                <h3>BASIC INFORMATION</h3>
+                <div class="row">
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">First Name:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.first_name}}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">last Name:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.last_name}}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">ID Number:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.id_number}}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">Gender:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.gender}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">Date of Birth:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.birthday}}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">Nationality:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.nationality}}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">Home phone number:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.home_phone_number}}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">Mobile phone number:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.mobile_phone_number}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">Personal Email:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.personal_email}}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">Marital status:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.marital}}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">Skype ID:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.skype_id}}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">Referal Name:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.referal_name}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">Current location:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.country + ' / ' + proposal.employee.state}}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group row no-gutters">
+                        <label class="col-6">Home Address:</label>
+                        <div class="col-5 ml-4">
+                            {{proposal.employee.home_address}}
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="">
+                <h3>Filter</h3>
+                <div class="form-group row ">
+                    <label class="col-6">Have you ever been deported from The United States of America?</label>
+                    <div class="col-6 font-weight-bold">
+                        {{showBolean(proposal.employee.deport_america)}}
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-6">Would you be able to pass a background check in The United States of America?</label>
+                    <div class="col-6 font-weight-bold">
+                            {{showBolean(proposal.employee.check_america)}}
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-6">Would you be able to pass a background check in your country?</label>
+                    <div class="col-6 font-weight-bold">
+                        {{showBolean(proposal.employee.check_background)}}
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-6">What is your English proficiency?</label>
+                    <div class="col-6 font-weight-bold">
+                            {{proposal.employee.english_level}}
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="">
+                <h3>DOCUMENTS</h3>
+                <div class="row ">
+					<div class="col-md-3" *ngFor="let document of recruit.documents">
+						<div *ngIf="checkImage(document.path)">
+							<label class="text-center font-weight-bold">{{document.name}}</label><br>
+							<div [ngStyle]="{'background-image': 'url(' + hostingUrl + 'storage/' + document.path + ')'}" class="image-background" (click)="openImage(document.path)"></div>
+						</div>	
+						<div *ngIf="checkPdf(document.path)">
+							<label class="text-center font-weight-bold">{{document.name}}</label><br>
+							<a href="{{hostingUrl}}storage/{{document.path}}" target="_blank">
+								<img src="assets/media/files/pdf.svg" class="medium-image-size">
+							</a>
+						</div>
+						<div *ngIf="checkZip(document.path)">
+							<label class="text-center font-weight-bold">{{document.name}}</label><br>
+							<a href="{{hostingUrl}}storage/{{document.path}}" target="_blank">
+								<img src="assets/media/files/zip.svg" class="medium-image-size">
+							</a>
+						</div>
+					</div>
+                </div>
+                <hr>
+            </div>
+            <div class="">
+                <h3>TELL US MORE ABOUT YOU</h3>
+                <div class="form-group row ">
+                    <label class="col-6">How Many hours do you have available to work each week?</label>
+                    <div class="col-6 font-weight-bold">
+                        {{showAvailableWorks(proposal.employee.available_works)}}
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-6">Do you have a laptop/Desktop Computer?</label>
+                    <div class="col-6 font-weight-bold">
+                            {{showBolean(proposal.employee.have_computer)}}
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-6">Do you have an extra monitor?</label>
+                    <div class="col-6 font-weight-bold">
+                        {{showBolean(proposal.employee.have_monitor)}}
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-6">Do you have a Headset?</label>
+                    <div class="col-6 font-weight-bold">
+                        {{showBolean(proposal.employee.have_headset)}}
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-6">Do you have an Ethernet adapter?</label>
+                    <div class="col-6 font-weight-bold">
+                        {{showBolean(proposal.employee.have_ethernet)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    

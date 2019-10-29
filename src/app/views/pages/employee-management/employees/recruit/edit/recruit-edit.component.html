@@ -1,0 +1,204 @@
+<kt-portlet>
+	<kt-portlet-header [sticky]="true" [title]="getComponentTitle(recruit)" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<div class="font-weight-bold" style="padding-right: 20px;font-size: 20px;">{{recruitStatus}}</div>
+			<a (click)="goBackWithoutId()" class="btn btn-secondary kt-margin-r-10"  mat-raised-button matTooltip="Back to the recruits list">
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+			<a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="approve(recruit)" [disabled]="viewStatus" mat-raised-button matTooltip="Approve Recruit">
+				<span class="kt-hidden-mobile">Approve</span>
+			</a>
+			<a href="javascript:;" class="btn btn-secondary kt-margin-r-10" (click)="reject(recruit)" [disabled]="viewStatus" mat-raised-button matTooltip="Reject Recruit">
+				<i class="la la-cog"></i>
+				<span class="kt-hidden-mobile">Reject</span>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<div *ngIf="recruit">
+			<div class="kt-form kt-form--label-right">
+				<h4 class="mb-4">BASIC INFORMATION</h4>
+				<div class="row">
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">First Name:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.first_name}}
+						</div>
+					</div>
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">last Name:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.last_name}}
+						</div>
+					</div>
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">ID Number:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.id_number}}
+						</div>
+					</div>
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">Gender:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.gender}}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">Date of Birth:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.birthday}}
+						</div>
+					</div>
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">Nationality:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.nationality}}
+						</div>
+					</div>
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">Home phone number:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.home_phone_number}}
+						</div>
+					</div>
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">Mobile phone number:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.mobile_phone_number}}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">Personal Email:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.personal_email}}
+						</div>
+					</div>
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">Marital status:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.marital}}
+						</div>
+					</div>
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">Skype ID:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.skype_id}}
+						</div>
+					</div>
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">Referal Name:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.referal_name}}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">Current location:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.country + ' / ' + recruit.state}}
+						</div>
+					</div>
+					<div class="col-md-3 form-group row no-gutters">
+						<label class="col-6">Home Address:</label>
+						<div class="col-5 ml-4 font-weight-bold">
+							{{recruit.home_address}}
+						</div>
+					</div>
+				</div>
+				<hr>
+			</div>
+			<div class="">
+				<h4 class="mb-4">Filter</h4>
+				<div class="form-group row ">
+					<label class="col-6">Have you ever been deported from The United States of America?</label>
+					<div class="col-6 font-weight-bold">
+						{{showBolean(recruit.deport_america)}}
+					</div>
+				</div>
+				<div class="form-group row ">
+					<label class="col-6">Would you be able to pass a background check in The United States of America?</label>
+					<div class="col-6 font-weight-bold">
+							{{showBolean(recruit.check_america)}}
+					</div>
+				</div>
+				<div class="form-group row ">
+					<label class="col-6">Would you be able to pass a background check in your country?</label>
+					<div class="col-6 font-weight-bold">
+						{{showBolean(recruit.check_background)}}
+					</div>
+				</div>
+				<div class="form-group row ">
+					<label class="col-6">What is your English proficiency?</label>
+					<div class="col-6 font-weight-bold">
+							{{recruit.english_level}}
+					</div>
+				</div>
+				<hr>
+			</div>
+			<div class="">
+				<h4 class="mb-4">DOCUMENTS</h4>
+				<div class="row ">
+					<div class="col-md-3" *ngFor="let document of recruit.documents">
+						<div *ngIf="checkImage(document.path)">
+							<label class="text-center font-weight-bold">{{document.name}}</label><br>
+							<div [ngStyle]="{'background-image': 'url(' + hostingUrl + 'storage/' + document.path + ')'}" class="image-background" (click)="openImage(document.path)"></div>
+						</div>	
+						<div *ngIf="checkPdf(document.path)">
+							<label class="text-center font-weight-bold">{{document.name}}</label><br>
+							<a href="{{hostingUrl}}storage/{{document.path}}" target="_blank">
+								<img src="assets/media/files/pdf.svg" class="medium-image-size">
+							</a>
+						</div>
+						<div *ngIf="checkZip(document.path)">
+							<label class="text-center font-weight-bold">{{document.name}}</label><br>
+							<a href="{{hostingUrl}}storage/{{document.path}}" target="_blank">
+								<img src="assets/media/files/zip.svg" class="medium-image-size">
+							</a>
+						</div>
+					</div>
+				</div>
+				<hr>
+			</div>
+			<div class="">
+				<h4 class="mb-4">TELL US MORE ABOUT YOU</h4>
+				<div class="form-group row ">
+					<label class="col-6">How Many hours do you have available to work each week?</label>
+					<div class="col-6 font-weight-bold">
+						{{showAvailableWorks(recruit.available_works)}}
+					</div>
+				</div>
+				<div class="form-group row ">
+					<label class="col-6">Do you have a laptop/Desktop Computer?</label>
+					<div class="col-6 font-weight-bold">
+							{{showBolean(recruit.have_computer)}}
+					</div>
+				</div>
+				<div class="form-group row ">
+					<label class="col-6">Do you have an extra monitor?</label>
+					<div class="col-6 font-weight-bold">
+						{{showBolean(recruit.have_monitor)}}
+					</div>
+				</div>
+				<div class="form-group row ">
+					<label class="col-6">Do you have a Headset?</label>
+					<div class="col-6 font-weight-bold">
+						{{showBolean(recruit.have_headset)}}
+					</div>
+				</div>
+				<div class="form-group row ">
+					<label class="col-6">Do you have an Ethernet adapter?</label>
+					<div class="col-6 font-weight-bold">
+						{{showBolean(recruit.have_ethernet)}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>
+	

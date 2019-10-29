@@ -1,0 +1,103 @@
+<div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
+    <!--Begin:: App Aside-->
+    <div class="kt-grid__item kt-app__toggle kt-app__aside" id="kt_user_profile_aside">
+        <!--begin:: Widgets/Applications/User/Profile1-->
+        <kt-meta-profile [menus$]="menus$"></kt-meta-profile>
+        <!--end:: Widgets/Applications/User/Profile1-->
+    </div>
+    <!--End:: App Aside-->
+
+    <!--Begin:: App Content-->
+    <div class="kt-grid__item kt-grid__item--fluid kt-app__content">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">BANK TRANSFER DETAILS</h3>
+                        </div>
+                    </div>
+
+                    <div *ngIf="loginedUser">
+                        <form [formGroup]="userForm" class="kt-form kt-form--group-seperator-dashed">
+        
+                            <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+                                Oh snap! Change a few things up and try submitting again.
+                            </kt-alert>
+                            <div class="kt-portlet__body">
+                                <div class="kt-section kt-section--first">
+                                    <div class="kt-section__body">
+
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Bank Name</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="" formControlName="bank_name">
+                                                    <mat-error>
+                                                        Bank Name is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Account Name</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="" formControlName="bank_account_name">
+                                                    <mat-error>
+                                                        Account Name is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Account Number: </label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="" formControlName="bank_account_number">
+                                                    <mat-error>
+                                                        Account Number:  is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-group-last row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Account Type</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <mat-radio-group aria-label="Account Type" formControlName="bank_account_type" required >
+                                                    <mat-radio-button value="Ahorro">Ahorro</mat-radio-button>
+                                                    <mat-radio-button value="Corriente">Corriente</mat-radio-button>
+                                                </mat-radio-group>
+                                                <mat-error *ngIf="isControlHasError('bank_account_type','required')">
+                                                    Account Type is
+                                                    <strong>required</strong>
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="kt-portlet__foot">
+                                <div class="kt-form__actions">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-xl-3">
+                                        </div>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <button type="button" class="btn btn-success" (click)="onSumbit()">Save</button>&nbsp;
+                                            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End:: App Content-->
+</div>

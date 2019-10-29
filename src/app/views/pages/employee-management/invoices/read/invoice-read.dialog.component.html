@@ -1,0 +1,71 @@
+<div class="kt-portlet"
+	[ngClass]="{ 'kt-portlet--body-progress kt-portlet--body-progress-overlay' : viewLoading }">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{getTitle()}}</h3>
+        </div>
+        <div class="pull-right">
+            <label class="mr-4" *ngIf="invoice.status == 'Pending'">
+                Please select if you approve this Time-off Request
+            </label>
+            <label *ngIf="invoice.status != 'Pending'" class="font-weight-bold">{{convert(invoice.status)}}</label>&nbsp;&nbsp;&nbsp;
+            <button type="button" mat-raised-button [mat-dialog-close]="data.animal" cdkFocusInitial >Close</button>
+        </div>
+	</div>
+    <div class="mr-4 ml-4 mt-4 mb-4">
+        <div *ngIf="invoice">
+            <div class="kt-form kt-form--label">
+                <div class="row">
+                    <div class="col-md-4 form-group row no-gutters">
+                        <label class="col-6 font-weight-bold">Date:</label>
+                        <div class="col-5 ml-4">
+                            {{invoice.invoicing_date}}
+                        </div>
+                    </div>
+                    <div class="col-md-4 form-group row no-gutters">
+                        <label class="col-6 font-weight-bold">Invoiced to:</label>
+                        <div class="col-5 ml-4">
+                            {{invoice.company.name}}
+                        </div>
+                    </div>
+                    <div class="col-md-4 form-group row no-gutters">
+                        <label class="col-4 font-weight-bold">Period:</label>
+                        <div class="col-7 ml-4">
+                            {{invoice.start_date}}~{{invoice.end_date}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="max-height: 400px;overflow-y: auto;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class=" font-weight-bold">Task</th>
+                            <th class=" font-weight-bold">Description</th>
+                            <th class=" font-weight-bold">Rate</th>
+                            <th class=" font-weight-bold">Amount</th>
+                            <th class=" font-weight-bold">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of this.invoice.items; index as i">
+                            <td>{{item.task}}</td>
+                            <td>{{item.description}}</td>
+                            <td>{{item.rate}}</td>
+                            <td>{{item.amount}}</td>
+                            <td>{{item.total}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                            <td>Total</td>
+                            <td>{{invoice.total}}</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>    
+        </div>
+    </div>
+</div>    

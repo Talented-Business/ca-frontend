@@ -1,0 +1,27 @@
+<form [formGroup]="photoForm" class="kt-form">
+    <div>
+        <mat-form-field>
+            <ngx-mat-file-input formControlName="photo" placeholder="Photo Upload" ></ngx-mat-file-input>
+            <mat-error *ngIf="isControlHasError('photo','required')">
+                    Photo is
+                <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="isControlHasError('photo','type')">
+                    Photo is
+                <strong>invalid</strong>
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <div class="row text-right">
+            <div class="col-lg-12">
+                <button type="button" mat-raised-button [mat-dialog-close]="" cdkFocusInitial matTooltip="Cancel">
+                    Cancel
+                </button>&nbsp;
+                <button type="button" mat-raised-button color="primary" (click)="onSubmit()" [disabled]="viewLoading" matTooltip="Upload image">
+                    Upload
+                </button>
+            </div>
+        </div>    
+    </div>            
+</form>

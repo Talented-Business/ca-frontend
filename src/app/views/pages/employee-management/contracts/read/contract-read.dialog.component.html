@@ -1,0 +1,133 @@
+<div class="kt-portlet"
+	[ngClass]="{ 'kt-portlet--body-progress kt-portlet--body-progress-overlay' : viewLoading }">
+    <!--begin::Form-->
+    <div>
+        <h3>Employeement</h3>
+        <div class="row">
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Hired Date:
+                </div>
+                <div class="col-md-6">
+                    {{contract.start_date}}
+                </div>
+            </div>
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Department:
+                </div>
+                <div class="col-md-6">
+                    {{contract.department.name}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Company:
+                </div>
+                <div class="col-md-6">
+                    {{contract.company.name}}
+                </div>
+            </div>
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Employee Status:
+                </div>
+                <div class="col-md-6">
+                    {{contract.employment_status}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Employment Type:
+                </div>
+                <div class="col-md-6">
+                    {{contract.employment_type}}
+                </div>
+            </div>
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Employee Status:
+                </div>
+                <div class="col-md-6">
+                    {{contract.employment_status}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Manager:
+                </div>
+                <div class="col-md-6">
+                    {{contract.manager}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3>Compensation</h3>
+        <div class="row">
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Compensation Type:
+                </div>
+                <div class="col-md-6">
+                    {{contract.compensation}}
+                </div>
+            </div>
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Hourly Rate:
+                </div>
+                <div class="col-md-6">
+                    {{contract.hourly_rate}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Hours per day period:
+                </div>
+                <div class="col-md-6">
+                    {{contract.hours_per_day_period}}
+                </div>
+            </div>
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Pay Days:
+                </div>
+                <div class="col-md-6">
+                    {{contract.pay_days}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    Deduction Item:
+                </div>
+                <div class="col-md-6">
+                    {{contract.deduction_item}}
+                </div>
+            </div>
+            <div class="col-md-6 row">
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__foot kt-portlet__no-border kt-portlet__foot--fit">
+        <div class="kt-form__actions kt-form__actions--solid">
+            <div class="row text-right">
+                <div class="col-lg-12">
+                    <button type="button" mat-raised-button [mat-dialog-close]="data.animal" cdkFocusInitial matTooltip="Close">
+                        Close
+                    </button>&nbsp;
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>    

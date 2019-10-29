@@ -1,0 +1,55 @@
+<div class="kt-portlet"
+	[ngClass]="{ 'kt-portlet--body-progress kt-portlet--body-progress-overlay' : viewLoading }">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{getTitle()}}</h3>
+        </div>
+        <div class="pull-right">
+            <label class="mr-4" *ngIf="timeoff.status == 'Pending'">
+                Please select if you approve this Time-off Request
+            </label>
+            <label *ngIf="timeoff.status != 'Pending'">{{timeoff.status}}</label>
+            <button type="button" mat-raised-button color="primary" (click)="updateStatus('Approved')" *ngIf="timeoff.status == 'Pending'">APPROVE</button>&nbsp;
+            <button type="button" mat-raised-button color="warn" (click)="updateStatus('Rejected')" *ngIf="timeoff.status == 'Pending'">REJECTE</button>&nbsp;
+            <button type="button" mat-raised-button [mat-dialog-close]="data.animal" cdkFocusInitial >Close</button>
+        </div>
+	</div>
+    <div class="mr-4 ml-4 mt-4 mb-4">
+        <div *ngIf="timeoff">
+            <div class="kt-form kt-form--label">
+                <div class="row">
+                    <div class="col-md-4 form-group row no-gutters">
+                        <label class="col-6">Name:</label>
+                        <div class="col-5 ml-4">
+                            {{timeoff.employee.first_name}} {{timeoff.employee.last_name}}
+                        </div>
+                    </div>
+                    <div class="col-md-4 form-group row no-gutters">
+                        <label class="col-6">ID Number:</label>
+                        <div class="col-5 ml-4">
+                            {{timeoff.employee.id_number}}
+                        </div>
+                    </div>
+                    <div class="col-md-4 form-group row no-gutters">
+                        <label class="col-6">Leave Policy:</label>
+                        <div class="col-5 ml-4">
+                            {{timeoff.policy}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 form-group row no-gutters">
+                        <label>From</label>&nbsp;&nbsp;{{timeoff.start_date}}&nbsp;&nbsp;<label>To</label>&nbsp;&nbsp;{{timeoff.end_date}}
+                            ({{timeoff.days}} days)
+                    </div>
+                    <div class="col-md-6 form-group row no-gutters">
+                        <label class="col-12">Leave Reason:</label>
+                        <div class="col-12 ml-4" style="white-space: pre-wrap; height:150px;overflow-y: auto;">
+                            {{timeoff.reason}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    

@@ -1,0 +1,29 @@
+<kt-portlet>
+	<kt-portlet-header [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+
+		<ng-container ktPortletTitle>
+			<h3 class="kt-portlet__head-title">
+				<span>Dashboard</span>
+			</h3>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body [class]="'kt-portlet__body--fit'">
+		<div class="row row-no-padding row-col-separator-xl">
+			<div class="col-xl-12">
+				<select class="pull-right mt-5 mr-5" [(ngModel)]="year">
+					<option value={{year}} *ngFor="let year of years">{{year}}</option>
+				</select>
+				<kt-widget14 [title]="'Invoice & Management Fee'" [desc]="''" [data]="fees" *ngIf="fees"></kt-widget14>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<kt-widgetpie [title]="'Members by Department'" [desc]="''" [data]="departments" [label]="'Department'" *ngIf="departments"></kt-widgetpie>
+			</div>
+			<div class="col-md-6">
+				<kt-widgetpie [title]="'Gender'" [desc]="''"  [data]="employees" [label]="'Gender'" *ngIf="employees"></kt-widgetpie>
+			</div>	
+		</div>			
+	</kt-portlet-body>
+</kt-portlet>

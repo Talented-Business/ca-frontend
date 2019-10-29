@@ -1,0 +1,239 @@
+<kt-portlet>
+    <kt-portlet-header [sticky]="true" [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+        <ng-container ktPortletTools>
+            <a (click)="goBackWithoutId()" class="btn btn-secondary kt-margin-r-10"  mat-raised-button matTooltip="Back to the company list">
+                <i class="la la-arrow-left"></i>
+                <span class="kt-hidden-mobile">Back</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+    <kt-portlet-body>
+        <mat-tab-group [(selectedIndex)]="selectedTab" *ngIf="company">
+            <mat-tab label="Overview">
+                <ng-template matTabContent>
+                    <div *ngIf="company">
+                        <a (click)="editCompany()" class="pull-right"  mat-raised-button matTooltip="Edit company">
+                            <mat-icon>edit</mat-icon>
+                        </a>
+                        <div class="section">
+                            <h4>General Information</h4>
+                            <br>
+                            <div class="row mb-3">
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Legal Name:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.name}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Website:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.website}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>State of Incorporation:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.state_incoporation}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Business entity Type:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.entity_type}}
+                                    </div>
+                                </div>
+                            </div>    
+                            <div class="row mb-3">
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Industry:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.industry}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Company Size:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.size}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 row no-gutters">
+                                    <div class="col-3">
+                                        <label>Business Description:</label>
+                                    </div>
+                                    <div class="col-9" style="white-space: pre-wrap;">
+                                        {{company.description}}
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <h4>Addresses</h4>
+                            <br>
+                            <div class="row mb-3">
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Headquarters Addresses:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.headquaters_addresses}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Legal Address:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.legal_address}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Biling Address:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.billing_address}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                </div>
+                            </div>    
+                            <br>
+                            <h4>Documents</h4>
+                            <br>
+                            <div class="row mb-3">
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Agreement:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.document_agreement}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Signed by:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.document_signed_by}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Signature date:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.document_signature_date}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                </div>
+                            </div>    
+                            <br>
+                            <h4>Payroll Bank Account</h4>
+                            <br>
+                            <div class="row mb-3">
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Bank Name:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.bank_name}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Account Name:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.bank_account_name}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Account number:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.bank_account_number}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                </div>
+                            </div>    
+                            <br>
+                            <h4>Administrators</h4>
+                            <br>
+                            <div class="row mb-3">
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>First Name:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.admin_first_name}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Last Name:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.admin_last_name}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Email:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.admin_email}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Phone Number:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.admin_phone_number}}
+                                    </div>
+                                </div>
+                            </div>    
+                            <div class="row mb-3">
+                                <div class="col-md-3 row no-gutters">
+                                    <div class="col-5">
+                                        <label>Access Levels:</label>
+                                    </div>
+                                    <div class="col-7 font-weight-bold">
+                                        {{company.admin_level}}
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                </div>
+                            </div>    
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Employees" [disabled]="!company || !company.id">
+                <ng-template matTabContent>
+                    <kt-contract-list  [companyId$]="companyId$"></kt-contract-list>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Users" [disabled]="!company || !company.id">
+                <ng-template matTabContent>
+                    <kt-company-user-list  [companyId$]="companyId$"></kt-company-user-list>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </kt-portlet-body>
+</kt-portlet>

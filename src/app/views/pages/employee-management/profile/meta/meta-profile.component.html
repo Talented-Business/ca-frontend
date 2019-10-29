@@ -1,0 +1,52 @@
+<div class="kt-portlet ">
+    <div class="kt-portlet__head  kt-portlet__head--noborder">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">
+            </h3>
+        </div>
+    </div>
+    <div class="kt-portlet__body kt-portlet__body--fit-y" *ngIf="loginedUser">
+        <!--begin::Widget -->
+        <div class="kt-widget kt-widget--user-profile-1">
+            <div class="kt-widget__head">
+                <div class="kt-widget__content">
+                    <div class="kt-widget__section">
+                        <a href="#" class="kt-widget__username">
+                            {{loginedUser.member.first_name}} {{loginedUser.member.last_name}}
+                            <i class="flaticon2-correct kt-font-success"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="kt-widget__body">
+                <div class="kt-widget__content">
+                    <div class="kt-widget__info">
+                        <span class="kt-widget__label">Email:</span>
+                        <a href="#" class="kt-widget__data">{{loginedUser.email}}</a>
+                    </div>
+                    <div class="kt-widget__info">
+                        <span class="kt-widget__label">Phone:</span>
+                        <a href="#" class="kt-widget__data">{{loginedUser.member.home_phone_number}}</a>
+                    </div>
+                    <div class="kt-widget__info">
+                        <span class="kt-widget__label">Location:</span>
+                        <span class="kt-widget__data">{{loginedUser.member.country}}/{{loginedUser.member.state}} {{loginedUser.member.home_address}}</span>
+                    </div>
+                </div>
+                <div class="kt-widget__items">
+                    <a href="#" routerLink="{{menu.link}}" [ngClass]="{'kt-widget__item': true, 'kt-widget__item--active':menu.slug==slug }"  *ngFor="let menu of profileMenus">
+                        <span class="kt-widget__section">
+                            <span style="vertical-align: text-top;">
+                                <mat-icon>{{menu.icon}}</mat-icon>
+                            </span>
+                            <span class="kt-widget__desc">
+                                {{menu.label}}
+                            </span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!--end::Widget -->
+    </div>
+</div>

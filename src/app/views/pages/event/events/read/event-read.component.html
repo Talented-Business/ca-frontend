@@ -1,0 +1,19 @@
+<kt-portlet>
+	<kt-portlet-header [sticky]="true" [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			
+			<a (click)="goBackWithoutId()" class="btn btn-secondary kt-margin-r-10"  mat-raised-button matTooltip="Back to the news list" *ngIf="loginedUser&&(loginedUser.type=='admin' || loginedUser.type=='super')">
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<div *ngIf="event">
+			<div class="kt-form kt-form--label-right">
+				<ckeditor [editor]="Editor" [config]="{ toolbar: [ ] }" [disabled]="true" [data]="event.description"></ckeditor>
+			</div>	
+		</div>
+	</kt-portlet-body>
+</kt-portlet>
+	

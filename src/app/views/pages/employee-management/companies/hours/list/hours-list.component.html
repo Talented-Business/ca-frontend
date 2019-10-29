@@ -1,0 +1,43 @@
+<kt-portlet>
+    <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+    <kt-portlet-header [class]="'kt-portlet__head--lg'" >
+        <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+
+        <ng-container ktPortletTitle>
+            <div style="display: flex;align-items: center;padding:1rem">
+                <div style="padding: 0 0.5rem 0 0;font-size: 1rem;font-weight: 500;color: #959cb6;">Hours information</div>
+            </div>    
+            <!-- end::FILTERS -->
+
+            <!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+            <!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+        </ng-container>
+    </kt-portlet-header>
+    <!-- end::Header -->
+
+    <kt-portlet-body>
+        <div class="" *ngIf="company&&company.departments.length>0">
+            <h5>Please upload an image with next’s week schedule.</h5>
+            <div class="row mt-4  mb-4  pt-4  pb-4" *ngFor="let department of company.departments">
+                <div class="col-md-4">
+                    {{department.name}}
+                </div>
+                <div class="col-md-6">
+                    <div *ngIf="department.hours && checkImage(department.hours)">
+                        <div [ngStyle]="{'background-image': 'url(' + hostingUrl + 'storage/' + department.hours + ')'}" class="image-background" (click)="openImage(department.hours)"></div>
+                    </div>	
+                    <div *ngIf="department.hours && checkImage(department.hours)==false">
+                        <a href="{{hostingUrl}}storage/{{department.hours}}" target="_blank">Hours</a>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-success" (click)="editHours(department)">upload</button>
+                    <button type="button" (click)="deleteHours(department)"  *ngIf="department.hours" class="btn btn-danger">delete</button>
+                </div>
+            </div>
+        </div>
+        <!-- end: BOTTOM -->
+    </kt-portlet-body>
+    <!-- end::Body -->
+
+</kt-portlet>

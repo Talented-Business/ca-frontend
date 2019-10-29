@@ -1,0 +1,418 @@
+<kt-portlet>
+	<kt-portlet-header [sticky]="true" [title]="getComponentTitle()" [class]="'kt-portlet__head--lg apply'" [viewLoading$]="loading$">
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<div *ngIf="employee && sent==false">
+			<!--begin::Form-->
+			<form [formGroup]="employeeForm" class="kt-form kt-form--group-seperator-dashed">
+
+				<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+					Oh snap! Change a few things up and try submitting again.
+				</kt-alert>
+				<h4>Basic Information</h4>
+				<hr>
+				<div class="kt-form__section kt-form__section--first">
+					<div class="kt-form__group">
+						<div class="row">
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="First Name" formControlName="first_name">
+									<mat-error>
+										First Name is
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="Last Name" formControlName="last_name" #last_name="matInput">
+									<mat-error>
+										Last Name is
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="ID Number" formControlName="id_number" #id_number="matInput">
+									<mat-error *ngIf="isControlHasError('id_number','required')">
+										ID Number is
+										<strong>required</strong>
+									</mat-error>
+									<mat-error *ngIf="isControlHasError('id_number','unique')">
+										ID Number is
+										<strong>duplicated</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<div>Gender:</div>
+								<mat-radio-group formControlName="gender" class="">
+									<mat-radio-button class="example-radio-button" value="Male">Male</mat-radio-button>
+									<mat-radio-button class="example-radio-button" value="Female">Female</mat-radio-button>
+								</mat-radio-group>
+							</div>
+						</div>
+					</div>
+
+					<div class="kt-form__group">
+						<div class="row">
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput [matDatepicker]="picker" formControlName="birthday" placeholder="Date of Birth">
+									<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+									<mat-datepicker #picker></mat-datepicker>
+									<mat-error>
+										Date of Birth is
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input type="text" matInput formControlName="nationality" [matAutocomplete]="auto" placeholder="Nationality" (focusout)="nationalFocusOut()">
+									<mat-error>
+										Nationality is
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+								<mat-autocomplete #auto="matAutocomplete">
+									<mat-option *ngFor="let national of filteredNationalities | async" [value]="national">
+									{{ national }}
+									</mat-option>
+								</mat-autocomplete>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="Home Phone Number" formControlName="home_phone_number">
+									<mat-error>
+										Home Phone Number is
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="Mobile Phone Number" formControlName="mobile_phone_number">
+									<mat-error>
+										Mobile Phone Number is
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="kt-form__group">
+						<div class="row">
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="Personal Email Address" formControlName="personal_email" #personal_email="matInput">
+									<mat-error *ngIf="isControlHasError('personal_email','required')">
+										Personal Email Address is
+										<strong>required</strong>
+									</mat-error>
+									<mat-error *ngIf="isControlHasError('personal_email','pattern')">
+										Personal Email Address is
+										<strong>invalid</strong>
+									</mat-error>
+									<mat-error *ngIf="isControlHasError('personal_email','unique')">
+										Personal Email Address is
+										<strong>duplicated</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<mat-select placeholder="Marital Status" formControlName="marital">
+										<mat-option value="Single" >Single</mat-option>
+										<mat-option value="Married" >Married</mat-option>
+										<mat-option value="Divorce" >Divorce</mat-option>
+									</mat-select>
+									<mat-error>
+										Marital Status
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="Skype ID" formControlName="skype_id">
+									<mat-error>
+										Skype ID is
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="Referal Name" formControlName="referal_name">
+									<mat-error>
+										Referal Name is
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+
+					<div class="kt-form__group">
+						<div class="row">
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="Country" formControlName="country">
+									<mat-error>
+										Country is
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="State" formControlName="state">
+									<mat-error>
+										State is
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+								<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="Home Address" formControlName="home_address">
+									<mat-error>
+										Home Address is
+										<strong>required</strong>
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-md-3 kt-margin-bottom-10-mobile">
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>		
+				<h4>Filter</h4>
+				<hr>
+				<div class="kt-form__section kt-form__section--second">
+					<div class="kt-form__group">
+						<div class="row">
+							<div class="col-md-6">
+								<label>Have you ever been deported from The United States of America?</label>
+							</div>
+							<div class="col-md-6">
+								<mat-radio-group formControlName="deport_america" class="">
+									<mat-radio-button class="example-radio-button" [value]=1>Yes</mat-radio-button>
+									<mat-radio-button class="example-radio-button" [value]=0>No</mat-radio-button>
+								</mat-radio-group>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label>Would you be able to pass a background check in The United States of America?</label>
+							</div>
+							<div class="col-md-6">
+								<mat-radio-group formControlName="check_america" class="">
+									<mat-radio-button class="example-radio-button" [value]=1>Yes</mat-radio-button>
+									<mat-radio-button class="example-radio-button" [value]=0>No</mat-radio-button>
+								</mat-radio-group>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label>Would you be able to pass a background check in your country?</label>
+							</div>
+							<div class="col-md-6">
+								<mat-radio-group formControlName="check_background" class="">
+									<mat-radio-button class="example-radio-button" [value]=1>Yes</mat-radio-button>
+									<mat-radio-button class="example-radio-button" [value]=0>No</mat-radio-button>
+								</mat-radio-group>
+							</div>
+						</div>
+					</div>
+					<div class="kt-form__group">
+						<label>What is your English proficiency?</label>
+						<br>							
+						<mat-radio-group formControlName="english_level" class="row">
+							<mat-radio-button class="col-md-3" value="Basic">BASIC</mat-radio-button>
+							<mat-radio-button class="col-md-3" value="Conversational">Conversational</mat-radio-button>
+							<mat-radio-button class="col-md-3" value="Fluent">Fluent</mat-radio-button>
+							<mat-radio-button class="col-md-3" value="Native">Native or Bilingue</mat-radio-button>
+						</mat-radio-group>
+						<div class="row">
+							<div class="col-md-3 meta-description">
+								I write in this language decently
+							</div>
+							<div class="col-md-3 meta-description">
+								I write and speak this language well
+							</div>
+							<div class="col-md-3 meta-description">
+								I write and speak this language almost perfectly
+							</div>
+							<div class="col-md-3 meta-description">
+								I write and speak this language perfectly, including colloquialisms
+							</div>
+						</div>
+					</div>
+				</div>	
+				<br>		
+				<h4>DOCUMENTS UPLOAD</h4>
+				<hr>
+				<div class="kt-form__section kt-form__section--second">
+					<div class="kt-form__group">
+						<h5>Upload a clear image of your choosen personal documents for each category</h5>
+						<br>
+						<div class="row">
+							<div class="col-md-3">
+								<div>Copy of ID or Passport</div>
+								<mat-form-field>
+									<ngx-mat-file-input formControlName="passport_path" placeholder="" accept=".jpg,.jpeg,.pdf,.zip"></ngx-mat-file-input>
+									<mat-error>
+										Copy of ID or Passport is
+										<strong>required</strong>
+									</mat-error>
+									<mat-error *ngIf="isControlHasError('passport_path','error')">
+										{{passport_path_error}}
+									</mat-error>						
+								</mat-form-field>
+							</div>
+							<div class="col-md-3">
+								<div>3 reference letters</div>
+								<mat-form-field>
+									<ngx-mat-file-input formControlName="reference_path" placeholder="" accept=".jpg,.jpeg,.pdf,.zip" ></ngx-mat-file-input>
+									<mat-error>
+										3 reference letters is
+										<strong>required</strong>
+									</mat-error>
+									<mat-error *ngIf="isControlHasError('reference_path','error')">
+										{{reference_path_error}}
+									</mat-error>						
+								</mat-form-field>
+								<div class="meta-description">Merge references in one document</div>
+							</div>
+							<div class="col-md-3">
+								<div>CV</div>
+								<mat-form-field>
+									<ngx-mat-file-input formControlName="cv_path" placeholder="" accept=".jpg,.jpeg,.pdf,.zip" ></ngx-mat-file-input>
+									<mat-error>
+											CV is
+										<strong>required</strong>
+									</mat-error>
+									<mat-error *ngIf="isControlHasError('cv_path','error')">
+										{{cv_path_error}}
+									</mat-error>						
+								</mat-form-field>
+							</div>
+							<div class="col-md-3">
+								<div>Police Record</div>
+								<mat-form-field>
+									<ngx-mat-file-input formControlName="police_path" placeholder="" accept=".jpg,.jpeg,.pdf,.zip" ></ngx-mat-file-input>
+									<mat-error>
+											Police Record is
+										<strong>required</strong>
+									</mat-error>
+									<mat-error *ngIf="isControlHasError('police_path','error')">
+										{{police_path_error}}
+									</mat-error>						
+								</mat-form-field>
+								<div class="meta-description">No more than a month after being issued</div>
+							</div>
+						</div>		
+					</div>	
+				</div>
+				<br>		
+				<h4>TELL US MORE ABOUT YOU</h4>
+				<hr>
+				<div class="kt-form__section kt-form__section--second">
+					<div class="kt-form__group">
+						<label>How Many hours do you have available to work each week?</label>
+						<br>	
+						<mat-radio-group formControlName="available_works" class="row">
+							<mat-radio-button class="col-md-4" value="Less_20">Less than 20 hours per week</mat-radio-button>
+							<mat-radio-button class="col-md-4" value="40">40 hours per week</mat-radio-button>
+							<mat-radio-button class="col-md-4" value="over_40">more than 40 hours per week</mat-radio-button>
+						</mat-radio-group>
+						<br>	
+						<h3>Equipment</h3>
+						<br>	
+						<div class="row">
+							<div class="col-md-6">
+								<label>Do you have a laptop/Desktop Computer?</label>
+							</div>
+							<div class="col-md-6">
+								<mat-radio-group formControlName="have_computer" class="">
+									<mat-radio-button class="example-radio-button" [value]=1>Yes</mat-radio-button>
+									<mat-radio-button class="example-radio-button" [value]=0>No</mat-radio-button>
+								</mat-radio-group>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label>Do you have an extra monitor?</label>
+							</div>
+							<div class="col-md-6">
+								<mat-radio-group formControlName="have_monitor" class="">
+									<mat-radio-button class="example-radio-button" [value]=1>Yes</mat-radio-button>
+									<mat-radio-button class="example-radio-button" [value]=0>No</mat-radio-button>
+								</mat-radio-group>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label>Do you have a Headset?</label>
+							</div>
+							<div class="col-md-6">
+								<mat-radio-group formControlName="have_headset" class="">
+									<mat-radio-button class="example-radio-button" [value]=1>Yes</mat-radio-button>
+									<mat-radio-button class="example-radio-button" [value]=0>No</mat-radio-button>
+								</mat-radio-group>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label>Do you have an Ethernet adapter?</label>
+							</div>
+							<div class="col-md-6">
+								<mat-radio-group formControlName="have_ethernet" class="">
+									<mat-radio-button class="example-radio-button" [value]=1>Yes</mat-radio-button>
+									<mat-radio-button class="example-radio-button" [value]=0>No</mat-radio-button>
+								</mat-radio-group>
+							</div>
+						</div>
+					</div>	
+				</div>
+				<div class="row mt-5">
+					<div class="col-md-4"></div>
+					<div class="col-md-4" style='display: grid;'>
+						<a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSumbit(false)" [disabled]="saving$ | async" mat-raised-button matTooltip="Submit Application">
+							<span class="kt-hidden-mobile">Submit Application</span>
+						</a>
+					</div>
+					<div class="col-md-4"></div>
+				</div>		
+			</form>
+			<br>
+			<br>
+			<div style="margin:30px;color:#202C4C;font-size:14px;">
+			Note: We keep all information submitted secure and do not share with any 3rd parties. If you ever want to remove the information you submit, simply let us know.
+			</div>
+		</div>
+		<div *ngIf="sent" style="font-size:2rem">
+			<p>Congrats! Your application to be a freelancer on the FreeeUp Marketplace has been submitted successfully.</p>
+
+			<p>We will review your submission and get back to you through email within 1-2 business days.</p>
+			
+			<p>We will let you know the next steps in the application process and can answer any questions you have.</p>
+			
+			<p>You can always reach us via Live Chat or at Support@FreeeUp.com.</p>
+			
+			<p>Have an amazing day!</p>
+			
+			<p>The FreeeUp Team</p>	
+		</div>
+	</kt-portlet-body>
+</kt-portlet>
+<div [ngClass]="{'show-wait-message':showWaitMessage}" *ngIf="showWaitMessage">
+	<img src="/assets/media/logos/loader.gif" width="50"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<div>Please wait while we send your application</div>
+</div>

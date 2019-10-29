@@ -1,0 +1,14 @@
+<kt-portlet>
+	<kt-portlet-header [sticky]="true"  [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<a (click)="goBackWithoutId()" class="btn btn-secondary kt-margin-r-10"  mat-raised-button matTooltip="Back to the assets list">
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<kt-asset-assign-list [asset$]="asset$"></kt-asset-assign-list>
+	</kt-portlet-body>
+</kt-portlet>
+	

@@ -1,0 +1,84 @@
+<kt-portlet>
+    <kt-portlet-header [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+        <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+
+        <ng-container ktPortletTitle>
+            <h3 class="kt-portlet__head-title">
+                <span>Dashboard</span>
+            </h3>
+        </ng-container>
+    </kt-portlet-header>
+    
+    <kt-portlet-body >
+        <div class="row">
+            <div class="col-md-6">
+                <h6>Time-off Request</h6>
+                <table class="table border">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Leave Policy</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Days</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let request of requests">
+                            <td>{{request.employee.first_name}} {{request.employee.last_name}}</td>
+                            <td>{{request.policy}}</td>
+                            <td>{{request.start_date}}</td>
+                            <td>{{request.end_date}}</td>
+                            <td>{{request.days}}</td>
+                        </tr>
+                        <tr *ngIf="requests.length==0"><td colspan="5">No Records</td></tr>
+                    </tbody>
+                </table>	
+            </div>
+            <div class="col-md-6">
+                <h6>Applicants</h6>
+                <table class="table border">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let applicant of applicants">
+                            <td>{{applicant.employee.first_name}}</td>
+                            <td>{{applicant.employee.last_name}}</td>
+                            <td>{{applicant.age}}</td>
+                            <td>{{applicant.position}}</td>
+                        </tr>
+                        <tr *ngIf="applicants.length==0"><td colspan="4">No Records</td></tr>
+                    </tbody>
+                </table>	
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h6>Invoices</h6>
+                <table class="table border">
+                    <thead>
+                        <tr>
+                            <th>Invoice ID</th>
+                            <th>Total</th>
+                            <th>Period</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let invoice of invoices">
+                            <td>{{invoice.id}}</td>
+                            <td>{{invoice.total}}</td>
+                            <td>{{invoice.start_date}}~{{invoice.end_date}}</td>
+                        </tr>
+                        <tr *ngIf="invoices.length==0"><td colspan="3">No Records</td></tr>
+                    </tbody>
+                </table>	
+            </div>
+        </div>    
+    </kt-portlet-body>
+</kt-portlet>

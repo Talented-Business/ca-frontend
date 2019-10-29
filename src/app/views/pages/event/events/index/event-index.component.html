@@ -1,0 +1,44 @@
+<kt-portlet>
+    <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+    <kt-portlet-header [class]="'kt-portlet__head--lg'" [viewLoading$]="dataSource.loading$">
+        <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+
+        <ng-container ktPortletTitle>
+            <h3 class="kt-portlet__head-title">
+                <span>News & Events</span>
+            </h3>    
+
+            <!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+            <!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+        </ng-container>
+    </kt-portlet-header>
+    <!-- end::Header -->
+
+    <kt-portlet-body>
+
+        <div class="">
+            <div class="article" *ngFor="let article of eventsResult">
+                <h4>{{article.title}}</h4>
+                <article>
+                    {{article.excerpt}}
+                </article>
+                <div class="row mt-3 mb-3">
+                    <div class="col-3  mt-2"><span class="font-weight-bold" style="font-size:15px;">{{article.created_date}}</span></div>
+                    <div class="col-6"></div>
+                    <div class="col-3"><a href="javascript:;" routerLink="/events/view/{{article.id}}" class="btn btn-primary" target="new">Read More</a></div>
+                </div>
+            </div>
+        </div>
+        <!-- start: BOTTOM -->
+        <div class="mat-table__bottom">
+            <!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+            <mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+            <!-- MATERIAL PAGINATOR | Binded to dasources -->
+            <!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+        </div>
+        <!-- end: BOTTOM -->
+    </kt-portlet-body>
+    <!-- end::Body -->
+
+</kt-portlet>

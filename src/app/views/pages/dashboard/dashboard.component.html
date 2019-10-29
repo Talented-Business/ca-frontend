@@ -1,0 +1,9 @@
+<div *ngIf="loginedUser&&loginedUser.type=='super' || loginedUser&&loginedUser.type=='admin'">
+	<kt-admin-dashboard></kt-admin-dashboard>
+</div>
+<div *ngIf="loginedUser&&loginedUser.type=='company'">
+	<kt-company-dashboard></kt-company-dashboard>
+</div>
+<div *ngIf="loginedUser&&loginedUser.type=='member' || loginedUser&&loginedUser.type=='employee'">
+	<kt-member-dashboard></kt-member-dashboard>
+</div>

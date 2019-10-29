@@ -1,0 +1,22 @@
+.job{
+    .kt-portlet{
+        .kt-widget__head h5{
+            clear: both;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;            
+        }
+        .description{
+            white-space: pre-wrap;
+            height:150px;
+            overflow-y: auto;
+        }
+        .actions{
+            display: flex;
+            button{
+                width:110px;
+                margin: auto;
+            }
+        }
+    }
+}

@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col-3 mt-2" style="font-size:14px">
+        Attributes total {{attributeTotal}}
+    </div>
+    <div class="col-6">        
+    </div>
+    <div class="col-3">    
+        <button (click)="addAttribute()" mat-raised-button matTooltip="Create new attribute" color="primary" type="button">
+            <span>New Attribute</span>
+        </button>
+    </div>
+</div>
+<!-- MATERIAL TABLE | Binded to datasources -->
+<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+<div class="mat-table__wrapper">
+    <mat-table class="lmat-elevation-z8"
+        #table
+        [dataSource]="dataSource"
+        matSort
+        #sort1="matSort"
+        matSortActive="created_at"
+        matSortDirection="desc"
+        matSortDisableClear
+        style="min-width:auto"
+        >
+        <!-- Checkbox Column -->
+
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+            <mat-cell *matCellDef="let attribute">{{attribute.name}}</mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+            <mat-cell *matCellDef="let attribute">
+                <span class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{ getItemCssClassByStatus(attribute.status) }} kt-badge--wide">{{  getItemStatusString(attribute.status) }}</span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-cell *matCellDef="let attribute">
+                <ng-template ngxPermissionsOnly="edit employee">
+                    <button mat-icon-button color="primary" matTooltip="edit attribute" (click)="editAttribute(attribute)">
+                        <mat-icon>edit</mat-icon>
+                    </button>&nbsp;
+                    <button mat-icon-button color="warn" *ngIf="attribute.status"  matTooltip="InActive" (click)="toggleStatus(attribute)">
+                        <mat-icon>clear</mat-icon>
+                    </button>&nbsp;
+                    <button mat-icon-button color="warn" *ngIf="!attribute.status"  matTooltip="Active" (click)="toggleStatus(attribute)">
+                        <mat-icon>redo</mat-icon>
+                    </button>&nbsp;
+                </ng-template>    
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <!-- Message for empty data  -->
+    <div class="mat-table__message" *ngIf="!dataSource.hasItems  ">No records found</div>
+</div>

@@ -1,0 +1,54 @@
+<kt-portlet>
+        <kt-portlet-header [class]="'kt-portlet__head--lg'">
+            <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+    
+            <ng-container ktPortletTitle>
+                <h3 class="kt-portlet__head-title">
+                    <span>Dashboard</span>
+                </h3>
+            </ng-container>
+        </kt-portlet-header>
+        
+        <kt-portlet-body>
+            <div class="row">
+                <div class="col-md-6">
+                    <div *ngIf="hours != null">
+                        <header>Hours</header>
+                        <div *ngIf="hours&&checkImage(hours)">
+                            <img src="{{hostingUrl}}storage/{{hours}}" style="max-width: 100%;height: auto; ">
+                        </div>
+                        <div *ngIf="hours&&(checkImage(hours)==false)" style="padding: 200px; border: 1px solid #e3e3e3;">
+                            <a href="{{hostingUrl}}storage/{{hours}}" target="new">Download or Open Hours</a>
+                        </div>
+                    </div>
+                    <div>
+                        <header>Applicants</header>
+                        <table class="table border">
+                            <thead>
+                                <tr>
+                                    <th>Leave Policy</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
+                                    <th>Days</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let timeoff of requests">
+                                    <td>{{timeoff.policy}}</td>
+                                    <td>{{timeoff.from_date}}</td>
+                                    <td>{{timeoff.to_date}}</td>
+                                    <td>{{timeoff.days}}</td>
+                                    <td>{{timeoff.status}}</td>
+                                </tr>
+                                <tr *ngIf="requests.length==0"><td colspan="5">No Records</td></tr>
+                            </tbody>
+                        </table>	
+                    </div>
+                </div>                
+                <div class="col-md-6">
+                    <kt-event-index></kt-event-index>
+                </div>
+            </div>
+        </kt-portlet-body>
+    </kt-portlet>

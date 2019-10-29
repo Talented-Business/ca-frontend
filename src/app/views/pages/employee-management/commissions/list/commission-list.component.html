@@ -1,0 +1,117 @@
+<kt-portlet>
+    <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+    <kt-portlet-header [class]="'kt-portlet__head--lg'" [viewLoading$]="dataSource.loading$">
+        <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+
+        <ng-container ktPortletTitle>
+            <h3 class="kt-portlet__head-title">
+                <span>Commissions </span>
+            </h3>    
+            <!-- end::FILTERS -->
+
+            <!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+            <!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+        </ng-container>
+        <ng-container ktPortletTools>        
+            <button type="button" class="btn btn-primary" *ngIf="canCreateCommission$ | async" (click)="addCommission()">New Commission</button>
+        </ng-container>        
+    </kt-portlet-header>
+    <!-- end::Header -->
+
+    <kt-portlet-body>
+
+        <!-- MATERIAL TABLE | Binded to datasources -->
+        <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mat-table__wrapper">
+                    <mat-table class="lmat-elevation-z8"
+                        #table
+                        [dataSource]="dataSource"
+                        matSort
+                        #sort1="matSort"
+                        matSortActive="created_at"
+                        matSortDirection="desc"
+                        matSortDisableClear>
+                        <!-- Checkbox Column -->
+        
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                            <mat-cell *matCellDef="let commissionGroup">{{commissionGroup.id}}</mat-cell>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="period">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Period</mat-header-cell>
+                            <mat-cell *matCellDef="let commissionGroup">{{commissionGroup.start_date}} - {{commissionGroup.end_date}}</mat-cell>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="total">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Total</mat-header-cell>
+                            <mat-cell *matCellDef="let commissionGroup">{{commissionGroup.total}}</mat-cell>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                            <mat-cell *matCellDef="let commissionGroup">{{commissionGroup.status}}</mat-cell>
+                        </ng-container>
+            
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        
+                        <mat-row *matRowDef="let row; columns: displayedColumns" (click)="selectRow(row)" [ngClass]="{'selected': row.id == selectedCommissonGroup.id}"></mat-row>
+                    </mat-table>
+                    <!-- Message for empty data  -->
+                    <div class="mat-table__message" *ngIf="!dataSource.hasItems  ">No records found</div>
+                    <div class="mat-table__message" *ngIf="dataSource.isPreloadTextViewed$ | async">Please wait....</div>
+                </div>
+        
+                <!-- start: BOTTOM -->
+                <div class="mat-table__bottom">
+                    <!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+                    <mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+                    <!-- MATERIAL PAGINATOR | Binded to dasources -->
+                    <!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+                    <mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="commissions" *ngIf="selectedCommissonGroup">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Qty</th>
+                                <th>Fee</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let commission of this.selectedCommissonGroup.items">
+                                <td>{{commission.created_date}}</td>
+                                <td>{{commission.name}}</td>
+                                <td>{{commission.quantity}}</td>
+                                <td>{{commission.fee}}</td>
+                                <td>{{commission.quantity * commission.fee | number : '.2-2'}}</td>
+                                <td>
+                                    <ng-template ngxPermissionsOnly="edit commission" *ngIf="this.selectedCommissonGroup.invoice_id==null">
+                                        <button mat-icon-button color="primary" matTooltip="Edit Commission" (click)="editCommission(commission)">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>&nbsp;
+                                        <button mat-icon-button color="warn" matTooltip="Remove" (click)="deleteCommission(commission)">
+                                            <mat-icon>clear</mat-icon>
+                                        </button>&nbsp;
+                                    </ng-template>    
+        
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>    
+        <!-- end: BOTTOM -->
+    </kt-portlet-body>
+    <!-- end::Body -->
+
+</kt-portlet>

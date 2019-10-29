@@ -1,0 +1,88 @@
+<div class="kt-portlet"
+	[ngClass]="{ 'kt-portlet--body-progress kt-portlet--body-progress-overlay' : viewLoading }">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{getTitle()}}</h3>
+		</div>
+	</div>
+    <!--begin::Form-->
+    <form [formGroup]="assetAssignForm" class="kt-form">
+
+        <div class="kt-portlet__body-progress" *ngIf='viewLoading'>
+            <mat-spinner [diameter]="20"></mat-spinner>
+        </div>
+    
+        <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+            Oh snap! Change a few things up and try submitting again.
+        </kt-alert>
+
+        <div class="kt-form__section kt-form__section--first">
+            <div class="form-group kt-form__group row">
+                <div class="col-md-4">
+                    <mat-form-field *ngIf="selectedEmployeeId==undefined">
+                        <input type="text" matInput [formControl]="employeeCtrl" [matAutocomplete]="auto" placeholder="Please select an employee">
+                        <mat-error *ngIf="isControlHasError('unique') || true">
+                            Employee is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDisplayFn">
+                        <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee" (onSelectionChange)="selected($event, employee)">
+                        {{ employee.first_name+' '+employee.last_name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </div>    
+                <div class="col-md-8">
+                    <h4 style="padding: 20px 0 0 20px;">{{selectedEmployeeDisplayName}}</h4>
+                </div>    
+            </div>
+            <div class="form-group kt-form__group row">
+                <div class="col-md-4 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput [matDatepicker]="picker" formControlName="start_date" placeholder="Given Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error>
+                            Given Date is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput [matDatepicker]="picker1" formControlName="end_date" placeholder="Return Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                        <mat-error>
+                            Return Date is
+                            <strong>incorrect</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Comment" formControlName="comment">
+                        <mat-error>
+                            Comment is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>        
+                </div>
+            </div>    
+        </div>
+		<div class="kt-portlet__foot kt-portlet__no-border kt-portlet__foot--fit">
+            <div class="kt-form__actions kt-form__actions--solid">
+                <div class="row text-right">
+                    <div class="col-lg-12">
+                        <button type="button" mat-raised-button [mat-dialog-close]="data.animal" cdkFocusInitial matTooltip="Cancel changes">
+                            Cancel
+                        </button>&nbsp;
+                        <button type="button" mat-raised-button color="primary" (click)="onSubmit()" [disabled]="viewLoading" matTooltip="Save changes">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </form>
+</div>    

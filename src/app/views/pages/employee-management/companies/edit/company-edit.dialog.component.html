@@ -1,0 +1,233 @@
+<div class="kt-container">
+<div *ngIf="company">
+    <div mat-dialog-actions class='d-flex justify-content-center'>
+        <h3>Update company {{company.name}}</h3>
+    </div>
+    <!--begin::Form-->
+    <form [formGroup]="companyForm" class="kt-form kt-form--group-seperator-dashed">
+
+        <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+            Oh snap! Change a few things up and try submitting again.
+        </kt-alert>
+
+        <div class="kt-form__section kt-form__section--first">
+            <h5>General Information</h5>
+            <div class="kt-form__group">
+                <div class="row">
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Legal Name" formControlName="name">
+                            <mat-error>
+                                Legal Name is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Website" formControlName="website">
+                            <mat-error>
+                                Website is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="State Incoporation" formControlName="state_incoporation">
+                            <mat-error >
+                                State Incoporation is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Entity Type" formControlName="entity_type">
+                            <mat-error >
+                                Entity Type is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-form__group">
+                <div class="row">
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput formControlName="industry" placeholder="Industry">
+                            <mat-error>
+                                Industry is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput formControlName="size" placeholder="Size">
+                            <mat-error>
+                                Size
+                            <strong>required</strong>
+                        </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <textarea matInput placeholder="Business Description" formControlName="description" rows=5></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <h5>Addresses</h5>
+            <div class="kt-form__group">
+                <div class="row">
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Headquaters Addresses" formControlName="headquaters_addresses">
+                            <mat-error>
+                                Headquaters Addresses is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Legal Address" formControlName="legal_address">
+                            <mat-error>
+                                Legal Address is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Biling Address" formControlName="billing_address">
+                            <mat-error>
+                                Biling Address is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    </div>
+                </div>
+            </div>
+            <h5>Documents</h5>
+            <div class="kt-form__group">
+                <div class="row">
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Agreement" formControlName="document_agreement">
+                            <mat-error>
+                                Agreement is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Signed by" formControlName="document_signed_by">
+                            <mat-error>
+                                Signed by is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput [matDatepicker]="picker" placeholder="Signature Date" formControlName="document_signature_date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error>
+                                Signature Date is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    </div>
+                </div>
+            </div>
+            <h5>Payroll Bank Account</h5>
+            <div class="kt-form__group">
+                <div class="row">
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Bank Name" formControlName="bank_name">
+                            <mat-error>
+                                Bank Name is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Account Name" formControlName="bank_account_name">
+                            <mat-error>
+                                Account Name is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Account Number" formControlName="bank_account_number">
+                            <mat-error>
+                                Account Number is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    </div>
+                </div>
+            </div>
+            <h5>Administrators</h5>
+            <div class="kt-form__group">
+                <div class="row">
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="First Name" formControlName="admin_first_name">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Last Name" formControlName="admin_last_name">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Email" formControlName="admin_email">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Phone Number" formControlName="admin_phone_number">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Admin level" formControlName="admin_level">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    </div>
+                    <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div mat-dialog-actions class='d-flex justify-content-center'>
+            <button type="button" mat-raised-button (click)="onSubmit()" matTooltip="Update Company">Update Company</button>
+            <button type="button" mat-raised-button [mat-dialog-close]="data.animal" cdkFocusInitial matTooltip="Cancel">Cancel</button>
+        </div>    
+    </form>
+</div>
+</div>
+    

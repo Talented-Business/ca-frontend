@@ -1,0 +1,76 @@
+$basicColor : #8BCEE1;
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+border-color:$basicColor
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle{
+color:$basicColor;
+background-color:$basicColor ;
+}
+
+.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+    background-color:$basicColor;
+}
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary{
+    background-color:$basicColor;
+}
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle{
+    background-color:$basicColor;
+}
+.apply{
+    .kt-portlet__head-label{
+        text-align: center;
+        align-self: center;
+        justify-content: center;
+        width: 100%;    
+		.kt-portlet__head-title{
+			font-size: 2rem!important;
+		}
+	}
+}
+.meta-description{
+    font-size:11px;
+}
+#kt_login{
+    .kt-login__wrapper{
+        background-image: url(/assets/media/bg/bg-3.jpg);
+    }
+    .medium-image-size{
+        width:200px;
+    }
+    .kt-login__logo{
+        display: flex;justify-content: center;    
+    }
+    .kt-login__account{
+        text-align: center;
+        display:none;
+    }    
+    .btn.btn-primary.btn-elevate{
+        box-shadow: 0px 4px 16px 0px rgba(139,206,225, 0.15);
+    }
+    .kt-login__btn-primary{
+        background-color:#8BCEE1;        
+        border-color: #8BCEE1;        
+    }
+    .btn.btn-primary.btn-elevate:hover {
+        box-shadow: 0px 9px 16px 0px rgba(32,44,76, 0.25) !important;
+    }    
+    .kt-login__btn-primary:hover{
+        background-color:#202C4C;        
+        border-color: #202C4C;        
+    }
+}
+.kt-header .kt-container {
+    .kt-header__brand-logo-default,.kt-header__brand-logo-sticky{
+        width:130px;
+    }
+}
+.mat-tab-body.mat-tab-body-active{
+    overflow-y: hidden!important;
+}
+.cdk-overlay-dark-backdrop{
+    background: transparent;
+}
+.kt-portlet{
+    box-shadow: initial;
+}

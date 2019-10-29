@@ -1,0 +1,144 @@
+<div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
+    <!--Begin:: App Aside-->
+    <div class="kt-grid__item kt-app__toggle kt-app__aside" id="kt_user_profile_aside">
+        <!--begin:: Widgets/Applications/User/Profile1-->
+        <kt-meta-profile [menus$]="menus$"></kt-meta-profile>
+        <!--end:: Widgets/Applications/User/Profile1-->
+    </div>
+    <!--End:: App Aside-->
+
+    <!--Begin:: App Content-->
+    <div class="kt-grid__item kt-grid__item--fluid kt-app__content">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">Basic Information</h3>
+                        </div>
+                    </div>
+                    <div *ngIf="loginedUser">
+                        <form [formGroup]="userForm" class="kt-form kt-form--group-seperator-dashed">
+        
+                            <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+                                Oh snap! Change a few things up and try submitting again.
+                            </kt-alert>
+                            <div class="kt-portlet__body">
+                                <div class="kt-section kt-section--first">
+                                    <div class="kt-section__body">
+
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Email</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="" formControlName="email">
+                                                    <mat-error *ngIf="isControlHasError('email','required')">
+                                                        Email Address is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                    <mat-error *ngIf="isControlHasError('email','pattern')">
+                                                        Email Address is
+                                                        <strong>invalid</strong>
+                                                    </mat-error>
+                                                    <mat-error *ngIf="isControlHasError('email','unique')">
+                                                        Email Address is
+                                                        <strong>duplicated</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Home Phone Number</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="" formControlName="home_phone_number">
+                                                    <mat-error>
+                                                        Home Phone Number is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Mobile Phone Number</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="" formControlName="mobile_phone_number">
+                                                    <mat-error>
+                                                        Mobile Phone Number is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <label class="col-xl-6"> <h3 class="kt-section__title kt-section__title-sm">Change Password</h3></label>
+                                            <div class="col-lg-6 col-xl-6">
+                                            
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Current Password</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="" formControlName="current_password" type="password">
+                                                    <mat-error *ngIf="isControlHasError('current_password','pattern')">
+                                                        Current Password is
+                                                        <strong>invalid</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">New Password</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="" formControlName="new_password" type="password">
+                                                    <mat-error *ngIf="isControlHasError('new_password','required')">
+                                                        New Password is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-group-last row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Confirm Password</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="" formControlName="confirm_password" type="password">
+                                                    <mat-error *ngIf="isControlHasError('confirm_password','required')">
+                                                        Confirm Password is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                    <mat-error *ngIf="isControlHasError('confirm_password','unmatched')">
+                                                        Confirm Password is
+                                                        <strong>unmatched</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="kt-portlet__foot">
+                                <div class="kt-form__actions">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-xl-3">
+                                        </div>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <button type="button" class="btn btn-success" (click)="onSumbit()">Save</button>&nbsp;
+                                            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End:: App Content-->
+</div>

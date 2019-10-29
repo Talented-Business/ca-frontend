@@ -1,0 +1,84 @@
+<div class="kt-portlet"
+	[ngClass]="{ 'kt-portlet--body-progress kt-portlet--body-progress-overlay' : viewLoading }">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{getTitle()}}</h3>
+		</div>
+	</div>
+    <!--begin::Form-->
+    <form [formGroup]="timeoffForm" class="kt-form">
+
+        <div class="kt-portlet__body-progress" *ngIf='viewLoading'>
+            <mat-spinner [diameter]="20"></mat-spinner>
+        </div>
+    
+        <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+            Oh snap! Change a few things up and try submitting again.
+        </kt-alert>
+
+        <div class="kt-form__section kt-form__section--first">
+            <div class="form-group kt-form__group row">
+                <div class="col-md-12">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <textarea matInput placeholder="Leave Reason" formControlName="reason" rows=5 cols=40></textarea>
+                        <mat-error>
+                            Leave Reason is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>                    
+                </div>
+            </div>    
+            <div class="form-group kt-form__group row">    
+                <div class="col-md-4">
+                    <mat-form-field >
+                        <mat-select placeholder="Leave Policy"  formControlName="policy">
+                            <mat-option value="Vacation">Vacation</mat-option>
+                            <mat-option value="Sickdays">Sickdays</mat-option>
+                            <mat-option value="Holidays">Holidays</mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Leave Policy is
+                            <strong>required</strong>
+                        </mat-error>                        
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput [matDatepicker]="picker" formControlName="start_date" placeholder="From Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error>
+                                From Date is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput [matDatepicker]="picker1" formControlName="end_date" placeholder="To Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                        <mat-error>
+                            To Date is
+                            <strong>incorrent</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+		<div class="kt-portlet__foot kt-portlet__no-border kt-portlet__foot--fit">
+            <div class="kt-form__actions kt-form__actions--solid">
+                <div class="row text-right">
+                    <div class="col-lg-12">
+                        <button type="button" mat-raised-button [mat-dialog-close]="data.animal" cdkFocusInitial matTooltip="Cancel changes">
+                            Cancel
+                        </button>&nbsp;
+                        <button type="button" mat-raised-button color="primary" (click)="onSubmit()" [disabled]="viewLoading" matTooltip="Save changes">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </form>
+</div>    

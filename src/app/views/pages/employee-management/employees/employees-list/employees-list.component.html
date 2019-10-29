@@ -1,0 +1,134 @@
+<kt-portlet>
+        <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+        <kt-portlet-header [class]="'kt-portlet__head--lg'" [viewLoading$]="dataSource.loading$">
+            <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+    
+            <ng-container ktPortletTitle>
+                <h3 class="kt-portlet__head-title">
+                    <span>Members</span>
+                </h3>
+                <div style="display: flex;align-items: center;padding:1rem">
+                    <div style="padding: 0 0.5rem 0 0;font-size: 1rem;font-weight: 500;color: #959cb6;">Total {{employeeTotal}}</div>
+                    <!-- start::FILTERS -->
+
+                    <div class="kt-margin-bottom-10-mobile ml-4">
+                        <mat-form-field class="mat-form-field-fluid" style="width:240px;">
+                            <input matInput placeholder="Search employee" #searchInput placeholder="Search">
+                            <mat-hint align="start">
+                                <strong>Search</strong> in name, email, phone numbers, ID number
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>    
+                <!-- end::FILTERS -->
+
+                <!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+                <!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+            </ng-container>
+            <ng-container ktPortletTools>
+                <div>Status&nbsp;&nbsp;&nbsp;</div>
+                <select #status>
+                    <option value="All" selected>All</option>
+                    <option value="approved">Available</option>
+                    <option value="hired">Hired</option>
+                    <option value="disabled">Disabled</option>
+                </select>
+            </ng-container>        
+        </kt-portlet-header>
+        <!-- end::Header -->
+    
+        <kt-portlet-body>
+    
+            <!-- MATERIAL TABLE | Binded to datasources -->
+            <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+            <div class="mat-table__wrapper">
+                <mat-table class="lmat-elevation-z8"
+                    #table
+                    [dataSource]="dataSource"
+                    matSort
+                    #sort1="matSort"
+                    matSortActive="created_at"
+                    matSortDirection="desc"
+                    matSortDisableClear>
+                    <!-- Checkbox Column -->
+    
+                    <ng-container matColumnDef="id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                        <mat-cell *matCellDef="let employee">{{employee.id}}</mat-cell>
+					</ng-container>
+
+                    <ng-container matColumnDef="first_name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>First name</mat-header-cell>
+                        <mat-cell *matCellDef="let employee">{{employee.first_name}}</mat-cell>
+					</ng-container>
+					
+                    <ng-container matColumnDef="last_name">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>Last name</mat-header-cell>
+						<mat-cell *matCellDef="let employee">{{employee.last_name }}</mat-cell>
+					</ng-container>
+		
+                    <ng-container matColumnDef="id_number">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>ID Number</mat-header-cell>
+                        <mat-cell *matCellDef="let employee">{{employee.id_number}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="age">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Age</mat-header-cell>
+                        <mat-cell *matCellDef="let employee">{{_calculateAge(employee.birthday)}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="current_location">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Current Location</mat-header-cell>
+                            <mat-cell *matCellDef="let employee">{{employee.country + ' / ' + employee.state }}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                        <mat-cell *matCellDef="let employee">
+                            <span class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{ getItemCssClassByStatus(employee.status) }} kt-badge--wide">{{  getItemStatusString(employee.status) }}</span>
+                        </mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                        <mat-cell *matCellDef="let employee">
+                            <ng-template ngxPermissionsOnly="edit employee">
+                                <button mat-icon-button color="primary" matTooltip="Edit employee" (click)="editEmployee(employee.id)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>&nbsp;
+                                <button mat-icon-button color="primary" matTooltip="View employee" (click)="readEmployee(employee.id)">
+                                    <mat-icon>visibility</mat-icon>
+                                </button>&nbsp;
+                                <button mat-icon-button color="warn" matTooltip="Disable employee" (click)="disableEmployee(employee.id)" *ngIf="['approved'].includes(employee.status)">
+                                    <mat-icon>clear</mat-icon>
+                                </button>&nbsp;
+                                <button mat-icon-button color="warn" matTooltip="Restore employee" (click)="restoreEmployee(employee.id)" *ngIf="['disabled'].includes(employee.status)">
+                                    <mat-icon>redo</mat-icon>
+                                </button>&nbsp;
+                            </ng-template>    
+                        </mat-cell>
+                    </ng-container>
+    
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                </mat-table>
+                <!-- Message for empty data  -->
+                <div class="mat-table__message" *ngIf="!dataSource.hasItems">No records found</div>
+                <div class="mat-table__message" *ngIf="dataSource.isPreloadTextViewed$ | async">Please wait....</div>
+            </div>
+    
+            <!-- start: BOTTOM -->
+            <div class="mat-table__bottom">
+                <!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+                <mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+                <!-- MATERIAL PAGINATOR | Binded to dasources -->
+                <!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+                <mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+            </div>
+            <!-- end: BOTTOM -->
+        </kt-portlet-body>
+        <!-- end::Body -->
+    
+    </kt-portlet>
+    

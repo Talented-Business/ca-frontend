@@ -1,0 +1,238 @@
+<kt-portlet>
+        <kt-portlet-header [sticky]="true" [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+            <ng-container ktPortletTools>
+                <div class="font-weight-bold" style="padding-right: 20px;font-size: 20px;" *ngIf="employee">{{getItemStatusString(employee.status)}}</div>
+                <a (click)="goBackWithoutId()" class="btn btn-secondary kt-margin-r-10"  mat-raised-button matTooltip="Back to the employees list">
+                    <i class="la la-arrow-left"></i>
+                    <span class="kt-hidden-mobile">Back</span>
+                </a>
+                <a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="redirectEditEmployee()" mat-raised-button matTooltip="Edit Employee">
+                    <span class="kt-hidden-mobile">Edit</span>
+                </a>
+            </ng-container>
+        </kt-portlet-header>
+        <kt-portlet-body>
+            <mat-tab-group [(selectedIndex)]="selectedTab" *ngIf="employee">
+                <mat-tab label="Profile">
+                    <ng-template matTabContent>
+                        <div *ngIf="employee">
+                            <div class="kt-form__section kt-form__section--first">
+                                <div class="kt-form__group">
+                                    <div class="row mb-5">
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">First Name:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.first_name}}</div>
+                                        </div>
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Last Name:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.last_name}}</div>
+                                        </div>
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">ID Number:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.id_number}}</div>
+                                        </div>
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Gender:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.gender}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div class="kt-form__group">
+                                    <div class="row mb-5">
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Date of Birth:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.birthday}}</div>
+                                        </div>
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Nationality:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.nationality}}</div>
+                                        </div>
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Home Phone Number:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.home_phone_number}}</div>
+                                        </div>
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Mobile Phone Number:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.mobile_phone_number}}</div>
+                                        </div>
+                                    </div>
+            
+                                </div>
+            
+                                <div class="kt-form__group">
+                                    <div class="row mb-5">
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Personal Email Address:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.personal_email}}</div>
+                                        </div>
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Marital Status:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.marital}}</div>
+                                        </div>
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Skype ID:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.skype_id}}</div>
+                                        </div>
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Referal Name:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.referal_name}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div class="kt-form__group">
+                                    <div class="row mb-5">
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Country / State:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.country}} {{employee.state}}</div>
+                                        </div>
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Home Address:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.home_address}}</div>
+                                        </div>
+                                        <div class="col-md-6 kt-margin-bottom-10-mobile">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-form__group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label class="pt-2 mt-4">Attributes:</label>
+                                        </div>
+                                        <div class="col-md-10" style="margin-top:10px;">
+                                            <span  *ngFor="let skill of employee.skills" class='' style = "padding:10px;border:1px solid #666;margin:10px;display:inline-flex;">
+                                                <span class="tag-content  font-weight-bold">{{skill.name}}</span>
+                                            </span>
+                                        </div>                                    
+                                    </div>
+                                </div>
+                                <div class="kt-form__group mt-5">
+                                    <div class="row mb-1">
+                                        <div class="col-md-6">
+                                            <label>Have you ever been deported from The United States of America?</label>
+                                        </div>
+                                        <div class="col-md-6 font-weight-bold">
+                                            {{showBolean(employee.deport_america)}}
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-md-6">
+                                            <label>Would you be able to pass a background check in The United States of America?</label>
+                                        </div>
+                                        <div class="col-md-6 font-weight-bold">
+                                            {{showBolean(employee.check_america)}}
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-md-6">
+                                            <label>Would you be able to pass a background check in your country?</label>
+                                        </div>
+                                        <div class="col-md-6 font-weight-bold">
+                                            {{showBolean(employee.check_background)}}
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <div class="row">
+                                        <div class="col-md-6 row">
+                                            <div class="col-6">
+                                                <label>Available working hours each week</label>
+                                            </div>
+                                            <div class="col-6 font-weight-bold">
+                                                {{showAvailableWorks(employee.available_works)}}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 row">
+                                            <div class="col-4">
+                                                <label>English level</label>
+                                            </div>
+                                            <div class="col-8 font-weight-bold">
+                                                {{employee.english_level}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-form__group">
+                                    <br>	
+                                    <br>	
+                                    <h3>Equipment</h3>
+                                    <br>	
+                                    <div class="row mb-5">
+                                        <div class="col-md-3 row">
+                                            <label class="col-6">Laptop / Computer:</label>
+                                            <div class="col-6 font-weight-bold">{{showBolean(employee.have_computer)}}</div>    
+                                        </div>
+                                        <div class="col-md-3 row">
+                                            <label class="col-6">Extra Monitor:</label>
+                                            <div class="col-6 font-weight-bold">{{showBolean(employee.have_monitor)}}</div>    
+                                        </div>
+                                        <div class="col-md-3 row">
+                                            <label class="col-6">Headset:</label>
+                                            <div class="col-6 font-weight-bold">{{showBolean(employee.have_headset)}}</div>    
+                                        </div>
+                                        <div class="col-md-3 row">
+                                            <label class="col-6">Ethernet Adapther:</label>
+                                            <div class="col-6 font-weight-bold">{{showBolean(employee.have_ethernet)}}</div>    
+                                        </div>
+                                    </div>
+                                </div>	
+                                <div class="kt-form__group">
+                                    <h3>Visit Details</h3>
+                                    <br>	
+                                    <div class="row mb-5">
+                                        <div class="col-md-3 row">
+                                            <label class="col-6">Visit to Employee:</label>
+                                            <div class="col-6 font-weight-bold">{{showBolean(employee.visit)}}</div>    
+                                        </div>
+                                        <div class="col-md-3 kt-margin-bottom-10-mobile row">
+                                            <label class="col-6">Approval Date:</label>
+                                            <div class="col-6 font-weight-bold">{{employee.approve_date}}</div>
+                                        </div>    
+                                    </div>
+                                    <div class="row gallery">
+                                        <div class="col-md-2 show-image" *ngFor="let photo of employee.photos" >
+                                            <div [ngStyle]="{'background-image': 'url(' + hostingUrl + 'storage/' + photo.path + ')'}" class="image-background">
+                                            </div>
+                                            <div class="overlay" (click)="openImage(photo.path)"></div>
+                                        </div>
+                                    </div>
+                                </div>	
+                            </div>
+                        </div>
+    
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Time-Off" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-timeoff-list [employeeId$]="employeeId$"></kt-timeoff-list>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Payments" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-invoice-member-list [employeeId$]="employeeId$"></kt-invoice-member-list>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Comissions" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-commission-group-list [employeeId$]="employeeId$"></kt-commission-group-list>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Documents" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-document-list [employee$]="employee$"></kt-document-list>                        
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Assets" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-employee-asset-assign-list [employee$]="employee$"></kt-employee-asset-assign-list>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Employeement" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-employee-contract-list [employee$]="employee$"></kt-employee-contract-list>
+                    </ng-template>
+                </mat-tab>
+            </mat-tab-group>
+        </kt-portlet-body>
+    </kt-portlet>
+    

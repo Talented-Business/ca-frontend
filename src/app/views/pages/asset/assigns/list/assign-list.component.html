@@ -1,0 +1,90 @@
+<kt-portlet>
+    <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+    <kt-portlet-header [class]="'kt-portlet__head--lg'" [viewLoading$]="dataSource.loading$">
+        <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+
+        <ng-container ktPortletTitle>
+            <h3 class="kt-portlet__head-title">
+                <span *ngIf="asset">{{asset.name}} | {{asset.imei}} </span>
+            </h3>    
+            <!-- end::FILTERS -->
+
+            <!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+            <!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+        </ng-container>
+        <ng-container ktPortletTools>
+            <button type="button" class="btn btn-primary" *ngIf="assetStatus=='Pending'" (click)="assign()">Assign</button>
+            <button type="button" class="btn btn-success" *ngIf="assetStatus=='Assigned'" (click)="unassign()">Unassign</button>
+            <div *ngIf="assetStatus=='Sold'">Sold</div>    
+        </ng-container>        
+    </kt-portlet-header>
+    <!-- end::Header -->
+
+    <kt-portlet-body>
+
+        <!-- MATERIAL TABLE | Binded to datasources -->
+        <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+        <div class="mat-table__wrapper">
+            <mat-table class="lmat-elevation-z8"
+                #table
+                [dataSource]="dataSource"
+                matSort
+                #sort1="matSort"
+                matSortActive="created_at"
+                matSortDirection="desc"
+                matSortDisableClear>
+                <!-- Checkbox Column -->
+
+                <ng-container matColumnDef="employee">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Employee</mat-header-cell>
+                    <mat-cell *matCellDef="let assetAssign">{{assetAssign.employee.first_name}} {{assetAssign.employee.last_name}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="start_date">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Given Date</mat-header-cell>
+                    <mat-cell *matCellDef="let assetAssign">{{assetAssign.start_date}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="end_date">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Return Date</mat-header-cell>
+                    <mat-cell *matCellDef="let assetAssign">{{assetAssign.end_date}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="comment">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Comment</mat-header-cell>
+                    <mat-cell *matCellDef="let assetAssign">{{assetAssign.comment}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let assetAssign">
+                        <ng-template ngxPermissionsOnly="edit employee">
+                            <button mat-icon-button color="primary" matTooltip="edit asset assign info" (click)="editAssetAssign(assetAssign)" *ngIf="assetAssign.currentAssign">
+                                <mat-icon>edit</mat-icon>
+                            </button>&nbsp;
+                        </ng-template>    
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+            <!-- Message for empty data  -->
+            <div class="mat-table__message" *ngIf="!dataSource.hasItems  ">No records found</div>
+            <div class="mat-table__message" *ngIf="dataSource.isPreloadTextViewed$ | async">Please wait....</div>
+        </div>
+
+        <!-- start: BOTTOM -->
+        <div class="mat-table__bottom">
+            <!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+            <mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+            <!-- MATERIAL PAGINATOR | Binded to dasources -->
+            <!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+        </div>
+        <!-- end: BOTTOM -->
+    </kt-portlet-body>
+    <!-- end::Body -->
+
+</kt-portlet>

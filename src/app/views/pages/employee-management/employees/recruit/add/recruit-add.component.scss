@@ -1,0 +1,23 @@
+$buttonColor : #202C4C;
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary{
+    background-color:$buttonColor;
+}
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle{
+    background-color:$buttonColor;
+}
+.show-wait-message{
+    z-index: 4;
+    position: fixed;
+    font-size: 16px;
+    font-weight: 500;
+    top: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    background: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color:white;
+    opacity: 0.85;
+}

@@ -1,0 +1,182 @@
+<kt-portlet>
+	<kt-portlet-header [sticky]="true" [title]="getTitle()" [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTools>
+			<a (click)="goBackWithoutId()" class="btn btn-secondary kt-margin-r-10"  mat-raised-button matTooltip="Back to the employees list">
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+            <div class="">
+                <div class="kt-portlet__body-progress mt-1" *ngIf='viewLoading'>
+                    <mat-spinner [diameter]="20"></mat-spinner>
+                </div>                    
+            </div>
+            <div class="">
+                <button  type="button" mat-raised-button class="button mt-3 mb-3" (click)="findInvoiceItems()" [disabled]="company_id==undefined || viewLoading">Get</button>&nbsp;&nbsp;&nbsp;
+                <button  type="button" mat-raised-button class="button mt-3 mb-3" (click)="addInvoiceItem()" [disabled]="viewLoading">Add Item</button>
+            </div>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+<div>
+    <!--begin::Form-->
+    <form [formGroup]="invoiceForm" class="kt-form">
+    
+        <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+            Oh snap! Change a few things up and try submitting again.
+        </kt-alert>
+
+        <div class="kt-form__section kt-form__section--first">
+            <div class="form-group kt-form__group row">
+                <div class="col-md-4">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput [matDatepicker]="picker2" formControlName="invoicing_date" placeholder="Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                        <mat-error>
+                                Date is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>                    
+                </div>
+                <div class="col-md-4">
+                    <div>
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input type="text" matInput [formControl]="companyCtrl" [matAutocomplete]="auto" placeholder="Company" (focusout)="companyFocusOut()">
+                            <mat-error *ngIf="true">
+                                Company is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDisplayFn">
+                            <mat-option *ngFor="let company of filteredCompanies | async" [value]="company" (onSelectionChange)="selected($event, company)">
+                                {{ company.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </div>
+                    <div *ngFor="let company of companies;" class="mt-3" style="display: none;">
+                        <label class="font-weight-bold" *ngIf ="company_id==company.id">Company Name:</label><span *ngIf ="company_id==company.id">{{company.name}}</span>
+                    </div>
+                </div>
+                <div class="col-md-2 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput [matDatepicker]="picker" formControlName="start_date" placeholder="From Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error>
+                                From Date is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput [matDatepicker]="picker1" formControlName="end_date" placeholder="To Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                        <mat-error>
+                            To Date is
+                            <strong>incorrent</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>    
+            <div style="max-height: 400px;overflow-y: auto;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Task</th>
+                            <th>Description</th>
+                            <th>Rate</th>
+                            <th>Amount</th>
+                            <th>Total</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of invoiceItems; index as i">
+                            <td>
+                                <mat-form-field class="task">
+                                    <mat-select [(ngModel)]="item.task" [ngModelOptions]="{standalone: true}" required>
+                                        <mat-option value="Time" >Time</mat-option>
+                                        <mat-option value="Sales" >Sales</mat-option>
+                                        <mat-option value="Fee" >Fee</mat-option>
+                                        <mat-option value="Other" >Other</mat-option>
+                                    </mat-select>
+                                    <div *ngIf="isControlHasError(i,'task','required')" class="kt-font-danger">
+                                        Task is
+                                        <strong>required</strong>
+                                    </div>
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="description">
+                                    <input matInput [(ngModel)]="item.description" [ngModelOptions]="{standalone: true}" required name="description">
+                                    <div *ngIf="isControlHasError(i,'description','required')" class="kt-font-danger">
+                                        Description is
+                                        <strong>required</strong>
+                                    </div>
+                                </mat-form-field>    
+                            </td>
+                            <td>
+                                <mat-form-field class="rate">
+                                    <input matInput type="number" [(ngModel)]="item.rate" [ngModelOptions]="{standalone: true}">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="amount">
+                                    <input matInput type="number" [(ngModel)]="item.amount" [ngModelOptions]="{standalone: true}" (ngModelChange)="amountChanged(i, item.amount)" required>
+                                    <div *ngIf="isControlHasError(i,'amount','required')" class="kt-font-danger">
+                                        <strong>required</strong>
+                                    </div>
+                                </mat-form-field>                                        
+                            </td>
+                            <td>
+                                <mat-form-field class="total">
+                                    <input matInput type="number" [(ngModel)]="item.total" [ngModelOptions]="{standalone: true}" required>
+                                    <div *ngIf="isControlHasError(i,'total','required')" class="kt-font-danger">
+                                        <strong>required</strong>
+                                    </div>
+                                </mat-form-field> 
+                            </td>
+                            <td>
+                                <ng-template ngxPermissionsOnly="edit invoice">
+                                    <button mat-icon-button color="warn" matTooltip="Remove" (click)="deleteInvoiceItem(i)">
+                                        <mat-icon>clear</mat-icon>
+                                    </button>&nbsp;
+                                </ng-template>    
+    
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                            <td>Total</td>
+                            <td>{{calculateTotal() | number : '.2-2'}}</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+		<div class="kt-portlet__foot kt-portlet__no-border kt-portlet__foot--fit">
+            <div class="kt-form__actions kt-form__actions--solid">
+                <div class="row text-right">
+                    <div class="col-lg-12">
+                        <button type="button" mat-raised-button  cdkFocusInitial matTooltip="Cancel changes">
+                            Cancel
+                        </button>&nbsp;
+                        <button type="button" mat-raised-button color="primary" (click)="onSubmit(true)" [disabled]="invoiceItems==undefined||invoiceItems&&invoiceItems.length==0 || viewLoading" matTooltip="Save changes">
+                            Save
+                        </button>&nbsp;
+                        <button type="button" mat-raised-button color="accent" (click)="onSubmit(false)" [disabled]="viewLoading" matTooltip="Save Draft" *ngIf="invoice.status=='Recheck' || invoice.status=='Draft' || invoice.status==undefined">
+                            Draft
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </form>
+</div>    
+</kt-portlet-body>
+</kt-portlet>

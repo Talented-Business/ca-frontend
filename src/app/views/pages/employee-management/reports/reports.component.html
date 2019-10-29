@@ -1,0 +1,92 @@
+<kt-portlet>
+        <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+        <kt-portlet-header [class]="'kt-portlet__head--lg'" >
+            <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+    
+            <ng-container ktPortletTitle>
+                <h3 class="kt-portlet__head-title">
+                    <span>Reports</span>
+                </h3>
+            </ng-container>
+        </kt-portlet-header>
+        <!-- end::Header -->
+    
+        <kt-portlet-body>
+            <div class="kt-form__section kt-form__section--first">
+                <div class="form-group kt-form__group row">
+                    <div class="col-md-4">
+                        <label class="font-weight-bold">Weekly Payroll</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="mt-2" [(ngModel)]="invoice_id">
+                            <option value="{{invoice.id}}" *ngFor="let invoice of invoices">Invoice No. {{invoice.id}} | {{invoice.company.name}} </option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" mat-raised-button color="primary" (click)="onExportOnInvoice()" matTooltip="Weekly Payroll Export">
+                            Export
+                        </button>
+                    </div>
+                </div>    
+                <div class="form-group kt-form__group row">
+                    <div class="col-md-4">
+                        <label class="font-weight-bold">Revenue per Month</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="mt-2" [(ngModel)]="month">
+                            <option value=1>January</option>
+                            <option value=2>Febrary</option>
+                            <option value=3>March</option>
+                            <option value=4>April</option>
+                            <option value=5>May</option>
+                            <option value=6>June</option>
+                            <option value=7>July</option>
+                            <option value=8>August</option>
+                            <option value=9>September</option>
+                            <option value=10>October</option>
+                            <option value=11>November</option>
+                            <option value=12>December</option>
+                        </select>
+                        <select class="mt-2" [(ngModel)]="monthYear">
+                            <option value={{year}} *ngFor="let year of years">{{year}}</option>
+                        </select>
+                        </div>
+                    <div class="col-md-4">
+                        <button type="button" mat-raised-button color="primary" (click)="onExportRevenueMonth()" matTooltip="Revenue per Month Export">
+                            Export
+                        </button>
+                    </div>
+                </div>    
+                <div class="form-group kt-form__group row">
+                    <div class="col-md-4">
+                        <label class="font-weight-bold">Members per Company</label>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" mat-raised-button color="primary" (click)="onExport('companyMembers')" matTooltip="Members per Company Export">
+                            Export
+                        </button>
+                    </div>
+                </div>    
+                <div class="form-group kt-form__group row">
+                    <div class="col-md-4">
+                        <label class="font-weight-bold">Revenue</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="mt-2" [(ngModel)]="year">
+                            <option value={{year}} *ngFor="let year of years">{{year}}</option>
+                        </select>
+                        </div>
+                    <div class="col-md-4">
+                        <button type="button" mat-raised-button color="primary" (click)="onExportRevenue()" matTooltip="Revenue Export">
+                            Export
+                        </button>
+                    </div>
+                </div>    
+            </div>
+        </kt-portlet-body>
+        <!-- end::Body -->
+    
+    </kt-portlet>
+    

@@ -1,0 +1,52 @@
+<kt-portlet>
+        <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+        <kt-portlet-header [class]="'kt-portlet__head--lg'" >
+            <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+    
+            <ng-container ktPortletTitle>
+                <h3 class="kt-portlet__head-title">
+                    <span>Settings</span>
+                </h3>
+            </ng-container>
+        </kt-portlet-header>
+        <!-- end::Header -->
+    
+        <kt-portlet-body>
+            <div class="kt-form__section kt-form__section--first">
+                <div class="form-group kt-form__group row">
+                    <div class="col-md-12 row">
+                        <label class="col-md-2">Worksnap Api Key</label>
+                        <div class="col-md-10">
+                            {{config.worksnap_api_key}}
+                            <div class="pull-right">
+                                <button mat-icon-button color="primary" (click)="openForm()">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group kt-form__group row">
+                    <div class="col-md-6 row">
+                        <label class="col-md-6">Company Fee</label>
+                        <div class="col-md-6">{{config.company_fee}}</div>
+                    </div>
+                    <div class="col-md-6 row">
+                        <label class="col-md-6">Member Fee</label>
+                        <div class="col-md-6">{{config.member_fee}}</div>
+                    </div>
+                </div>    
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <kt-department-list></kt-department-list>
+                </div>
+                <div class="col-md-6">
+                    <kt-attribute-list></kt-attribute-list>
+                </div>
+            </div>
+        </kt-portlet-body>
+        <!-- end::Body -->
+    
+    </kt-portlet>
+    

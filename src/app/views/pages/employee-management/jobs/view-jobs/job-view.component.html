@@ -1,0 +1,80 @@
+<kt-portlet>
+    <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+    <kt-portlet-header [class]="'kt-portlet__head--lg'" [viewLoading$]="dataSource.loading$">
+        <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+
+        <ng-container ktPortletTitle>
+            <h3 class="kt-portlet__head-title">
+                <span>Jobs Opportunities</span>
+            </h3>    
+            <div style="display: flex;align-items: center;padding:1rem">
+                <div style="padding: 0 0.5rem 0 0;font-size: 1rem;font-weight: 500;color: #959cb6;">Total {{jobTotal}}</div>
+            </div>    
+            <!-- end::FILTERS -->
+
+            <!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+            <!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+        </ng-container>
+        <ng-container ktPortletTools>
+        </ng-container>        
+    </kt-portlet-header>
+    <!-- end::Header -->
+
+    <kt-portlet-body style="background-color:#f2f3f8;">
+
+        <!-- MATERIAL TABLE | Binded to datasources -->
+        <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+        <div class="mat-grid__wrapper">
+            <div class="row">
+                <div *ngFor="let job of jobsResult" class="col-md-3 job"> 
+                    <div class="kt-portlet kt-portlet--height-fluid">
+                        <div class="kt-portlet__head kt-portlet__head--noborder">
+                        </div>
+                        <div class="kt-portlet__body">
+                            <div class="kt-widget kt-widget--user-profile-2">
+                                <div class="kt-widget__head">
+                                    <h5>{{job.title}}</h5>
+                                </div>
+                                <div class="kt-widget__body">
+                                    <div class="kt-widget__section description">
+                                        {{job.description}}
+                                    </div>
+                                    <div class="kt-widget__item">
+                                        <div class="row">
+                                            <label class="col-md-4 font-weight-bold">Position</label>
+                                            <div class="col-md-8 text-right">{{job.position}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="col-md-4 font-weight-bold">Date</label>
+                                            <div class="col-md-8 text-right">{{job.created_date}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-widget__footer actions">
+                                    <button mat-raised-button color="primary" *ngIf="!job.has_proposal" (click)="applyJob(job)">View More</button>
+                                    <button mat-raised-button disabled *ngIf="job.has_proposal">Applied</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Message for empty data  -->
+            <div class="mat-table__message" *ngIf="!dataSource.hasItems  ">No records found</div>
+            <div class="mat-table__message" *ngIf="dataSource.isPreloadTextViewed$ | async">Please wait....</div>
+        </div>
+
+        <!-- start: BOTTOM -->
+        <div class="mat-table__bottom">
+            <!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+            <mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+            <!-- MATERIAL PAGINATOR | Binded to dasources -->
+            <!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+            <mat-paginator [pageSize]="8" [pageSizeOptions]="[4, 8, 12]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+        </div>
+        <!-- end: BOTTOM -->
+    </kt-portlet-body>
+    <!-- end::Body -->
+
+</kt-portlet>

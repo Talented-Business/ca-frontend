@@ -1,0 +1,212 @@
+<div class="kt-portlet"
+	[ngClass]="{ 'kt-portlet--body-progress kt-portlet--body-progress-overlay' : viewLoading }">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{getTitle()}}</h3>
+        </div>
+		<div class="kt-portlet__head-label pull-right" *ngIf="proposal_id==undefined || proposal_id && proposal_status == 'inreview'|| proposal_id && proposal_status == 'approved'">
+            <div *ngFor="let company of companies;" class="mt-3">
+                <h3 *ngIf ="company_id==company.id" style="font-size: 20px">{{company.name}}</h3>
+            </div>
+        </div>
+	</div>
+    <!--begin::Form-->
+    <form [formGroup]="contractForm" class="kt-form">
+
+        <div class="kt-portlet__body-progress" *ngIf='viewLoading'>
+            <mat-spinner [diameter]="20"></mat-spinner>
+        </div>
+    
+        <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+            Oh snap! Change a few things up and try submitting again.
+        </kt-alert>
+
+        <div class="kt-form__section kt-form__section--first">
+            <div class="row">
+                <div class="col-md-4">
+                    <mat-form-field *ngIf="proposal_id==undefined&&contract.employee_id==undefined">
+                        <input type="text" matInput [formControl]="employeeCtrl" [matAutocomplete]="auto" placeholder="Please select an employee" (focusout)="employeeFocusOut()">
+                        <mat-error *ngIf="isEmployeeHasError('unique') || true">
+                            Employee is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDisplayFn">
+                        <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee" (onSelectionChange)="selected($event, employee)">
+                        {{ employee.first_name+' '+employee.last_name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <div *ngIf="proposal_id && (proposal_status != 'inreview' && proposal_status != 'approved')">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input type="text" matInput [formControl]="companyCtrl" [matAutocomplete]="auto" placeholder="Company" (focusout)="companyFocusOut()">
+                            <mat-error *ngIf="true">
+                                Company is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDisplayCompanyFn">
+                            <mat-option *ngFor="let company of filteredCompanies | async" [value]="company" (onSelectionChange)="selectedCompany($event, company)">
+                                {{ company.name}}
+                            </mat-option>
+                        </mat-autocomplete>    
+                    </div>
+                    <div *ngIf="contract.status==0" style="padding: 20px 0 0 20px;"><label class="font-weight-bold mr-4">Contract End Date</label>{{contract.end_date}}</div>
+                </div>
+            </div>    
+            <br>
+            <h5>Employment</h5>
+            <div class="form-group kt-form__group row">
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput [matDatepicker]="picker" placeholder="Hire Date" formControlName="start_date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error>
+                            Hire Date is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Position" formControlName="position">
+                        <mat-error>
+                            Position is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Employment Type" formControlName="employment_type">
+                        <mat-error >
+                            Employment Type is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Employee Status" formControlName="employment_status">
+                        <mat-error >
+                            Employee Status is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-group kt-form__group row">
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <mat-select placeholder="Department" formControlName="department_id">
+                            <mat-option value="{{department.id}}" *ngFor="let department of departments;">{{department.name}}</mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Department
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput formControlName="work_location" placeholder="Work Location">
+                        <mat-error>
+                            Work Location
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput formControlName="manager" placeholder="Manager">
+                        <mat-error>
+                            Manager
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput formControlName="worksnap_id" placeholder="Worksnap ID"  (focusout)="worksnapFocusOut()">
+                        <mat-error *ngIf="isControlHasError('worksnap_id','required')">
+                            Worksnap ID
+                            <strong>invalid</strong>
+                        </mat-error>
+                        <mat-error *ngIf="isControlHasError('worksnap_id','unique')">
+                            Worksnap ID is
+                            <strong>invalid</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="" style="color:green">{{worksnapName}}</div>
+                </div>
+            </div>
+            <h5>Compensation</h5>
+            <div class="form-group kt-form__group row">
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Compensation" formControlName="compensation">
+                        <mat-error>
+                            Compensation is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput type="number" placeholder="Hourly Rate" formControlName="hourly_rate">
+                        <mat-error>
+                            Hourly Rate is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput type="number" placeholder="Hours per day period" formControlName="hours_per_day_period">
+                        <mat-error>
+                            Hours per day period is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Pay Days" formControlName="pay_days">
+                        <mat-error>
+                            Pay Days is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group kt-form__group row">
+                <div class="col-md-3 kt-margin-bottom-10-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput type="number" placeholder="Deduction Item" formControlName="deduction_item">
+                        <mat-error>
+                            Deduction Item is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-9 kt-margin-bottom-10-mobile">
+                </div>
+            </div>
+        </div>
+		<div class="kt-portlet__foot kt-portlet__no-border kt-portlet__foot--fit">
+            <div class="kt-form__actions kt-form__actions--solid">
+                <div class="row text-right">
+                    <div class="col-lg-12">
+                        <button type="button" mat-raised-button [mat-dialog-close]="data.animal" cdkFocusInitial matTooltip="Cancel changes">
+                            Cancel
+                        </button>&nbsp;
+                        <button type="button" mat-raised-button color="primary" (click)="onSubmit()" [disabled]="viewLoading" matTooltip="Save changes">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </form>
+</div>    

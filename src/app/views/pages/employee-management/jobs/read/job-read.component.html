@@ -1,0 +1,36 @@
+<kt-portlet>
+	<kt-portlet-header [sticky]="true" [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+		<ng-container ktPortletTools>
+			<div class="font-weight-bold" style="padding-right: 20px;font-size: 30px;">{{jobStatus}}</div>
+			<a (click)="goBackWithoutId()" class="btn btn-secondary kt-margin-r-10"  mat-raised-button matTooltip="Back to the jobs list">
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<div *ngIf="job">
+			<div  style="margin:20px 0px;border:1px solid #ffffff">
+				<button (click)="toggleView()" class="btn pull-right" style="margin-top: -18px;display:none">
+					<mat-icon *ngIf="!view">arrow_downward</mat-icon>
+					<mat-icon *ngIf="view">arrow_upward</mat-icon>
+				</button>
+				<div *ngIf="view">
+					<div class="kt-form kt-form--label-right">
+						<div style="white-space: pre-wrap;">
+							{{job.description}}
+						</div>
+					</div>	
+					<div class='mb-4'>
+						<label class="font-weight-bold">Attributes:</label>
+						<div *ngFor="let skill of job.skills" style="margin:10px;padding:5px 10px;border:1px solid #444444;display: inline-block;">
+							{{skill.name}}
+						</div>
+					</div>
+				</div>
+			</div>
+			<kt-proposal-list [jobId$]="jobId$"></kt-proposal-list>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>
+	

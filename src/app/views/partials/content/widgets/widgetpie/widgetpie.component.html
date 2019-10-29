@@ -1,0 +1,34 @@
+<div class="kt-widget14">
+	<div class="kt-widget14__header kt-margin-b-30">
+		<h3 class="kt-widget14__title">{{title}}</h3>
+		<span class="kt-widget14__desc">{{desc}}</span>
+	</div>
+	<div class="kt-widget14__chart" style="height:320px;">
+		<canvas #chart></canvas>
+	</div>
+	<div>
+			<table class="table border">
+				<thead>
+					<tr>
+						<th>{{label}}</th>
+						<th>Members</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let name of data.labels; let i = index">
+						<td>
+							{{name}}
+						</td>
+						<td>
+							{{data.datasets[0].data[i]}}
+						</td>
+					</tr>
+					<tr>
+						<td>Total</td>
+						<td>{{total}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+</div>

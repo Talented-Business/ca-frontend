@@ -1,0 +1,390 @@
+<kt-portlet>
+        <kt-portlet-header [sticky]="true" [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+            <ng-container ktPortletTools>
+                <div class="font-weight-bold" style="padding-right: 20px;font-size: 20px;" *ngIf="employee">{{getItemStatusString(employee.status)}}</div>
+                <a (click)="goBackWithoutId()" class="btn btn-secondary kt-margin-r-10"  mat-raised-button matTooltip="Back to the employees list">
+                    <i class="la la-arrow-left"></i>
+                    <span class="kt-hidden-mobile">Back</span>
+                </a>
+                <a href="javascript:;" class="btn btn-secondary kt-margin-r-10" (click)="reset()" [disabled]="selectedTab !== 0" mat-raised-button matTooltip="Reset changes">
+                    <i class="la la-cog"></i>
+                    <span class="kt-hidden-mobile">Reset</span>
+                </a>
+                <a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSumbit(false)" mat-raised-button matTooltip="Save" *ngIf="selectedTab === 0">
+                    <span class="kt-hidden-mobile">Save</span>
+                </a>
+            </ng-container>
+        </kt-portlet-header>
+        <kt-portlet-body>
+            <mat-tab-group [(selectedIndex)]="selectedTab" *ngIf="employee">
+                <mat-tab label="Profile">
+                    <ng-template matTabContent>
+                        <div *ngIf="employee">
+                            <!--begin::Form-->
+                            <form [formGroup]="employeeForm" class="kt-form kt-form--group-seperator-dashed">
+    
+                                <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+                                    Oh snap! Change a few things up and try submitting again.
+                                </kt-alert>
+    
+                                <div class="kt-form__section kt-form__section--first">
+                                    <div class="kt-form__group">
+                                        <div class="row">
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="First Name" formControlName="first_name">
+                                                    <mat-error>
+                                                        First Name is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="Last Name" formControlName="last_name" #last_name="matInput">
+                                                    <mat-error>
+                                                        Last Name is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="ID Number" formControlName="id_number" #id_number="matInput">
+                                                    <mat-error *ngIf="isControlHasError('id_number','required')">
+                                                        ID Number is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                    <mat-error *ngIf="isControlHasError('id_number','unique')">
+                                                        ID Number is
+                                                        <strong>duplicated</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <div>Gender:</div>
+                                                <mat-radio-group formControlName="gender" class="">
+                                                    <mat-radio-button class="example-radio-button" value="Male">Male</mat-radio-button>
+                                                    <mat-radio-button class="example-radio-button" value="Female">Female</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                                    <div class="kt-form__group">
+                                        <div class="row">
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput [matDatepicker]="picker" formControlName="birthday" placeholder="Date of Birth">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                    <mat-error>
+                                                        Date of Birth is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <mat-select placeholder="Nationality" formControlName="nationality">
+                                                        <mat-option value="{{national}}" *ngFor="let national of availableNationalities;">{{national}}</mat-option>
+                                                    </mat-select>
+                                                    <mat-error>
+                                                        Nationality
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="Home Phone Number" formControlName="home_phone_number">
+                                                    <mat-error>
+                                                        Home Phone Number is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="Mobile Phone Number" formControlName="mobile_phone_number">
+                                                    <mat-error>
+                                                        Mobile Phone Number is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                
+                                    </div>
+                
+                                    <div class="kt-form__group">
+                                        <div class="row">
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="Personal Email Address" formControlName="personal_email">
+                                                    <mat-error *ngIf="isControlHasError('personal_email','required')">
+                                                        Personal Email Address is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                    <mat-error *ngIf="isControlHasError('personal_email','pattern')">
+                                                        Personal Email Address is
+                                                        <strong>invalid</strong>
+                                                    </mat-error>
+                                                    <mat-error *ngIf="isControlHasError('personal_email','unique')">
+                                                        Personal Email Address is
+                                                        <strong>duplicated</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <mat-select placeholder="Marital Status" formControlName="marital">
+                                                        <mat-option value="Single" >Single</mat-option>
+                                                        <mat-option value="Married" >Married</mat-option>
+                                                        <mat-option value="Divorce" >Divorce</mat-option>
+                                                    </mat-select>
+                                                    <mat-error>
+                                                        Marital Status
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="Skype ID" formControlName="skype_id">
+                                                    <mat-error>
+                                                        Skype ID is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="Referal Name" formControlName="referal_name">
+                                                    <mat-error>
+                                                        Referal Name is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                                    <div class="kt-form__group">
+                                        <div class="row">
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="Country" formControlName="country">
+                                                    <mat-error>
+                                                        Country is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="State" formControlName="state">
+                                                    <mat-error>
+                                                        State is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput placeholder="Home Address" formControlName="home_address">
+                                                    <mat-error>
+                                                        Home Address is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="kt-form__group">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <mat-form-field style="margin:20px;">
+                                                    <mat-select placeholder="Attributes" [(ngModel)]="addAttribute" (ngModelChange)="onAddAttribute()" [ngModelOptions]="{standalone: true}">
+                                                        <mat-option *ngFor="let attribute of attributes" [value]="attribute">
+                                                        {{ attribute.name }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-9" style="margin-top:10px;">
+                                                <span  *ngFor="let tag of tags" class='' style = "padding:10px;border:1px solid #666;margin:10px;display:inline-flex;">
+                                                    <span (click)="remove(tag)" class="remove_tag"></span> 
+                                                    <span class="tag-content">{{tag.name}}</span>
+                                                </span>
+                                            </div>                                    
+                                        </div>
+                                    </div>
+                                    <div class="kt-form__group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Have you ever been deported from The United States of America?</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <mat-radio-group formControlName="deport_america" class="">
+                                                    <mat-radio-button class="example-radio-button" [value]=1>Yes</mat-radio-button>
+                                                    <mat-radio-button class="example-radio-button" [value]=0>No</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Would you be able to pass a background check in The United States of America?</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <mat-radio-group formControlName="check_america" class="">
+                                                    <mat-radio-button class="example-radio-button" [value]=1>Yes</mat-radio-button>
+                                                    <mat-radio-button class="example-radio-button" [value]=0>No</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Would you be able to pass a background check in your country?</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <mat-radio-group formControlName="check_background" class="">
+                                                    <mat-radio-button class="example-radio-button" [value]=1>Yes</mat-radio-button>
+                                                    <mat-radio-button class="example-radio-button" [value]=0>No</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <div class="row">
+                                            <div class="col-md-6 row">
+                                                <div class="col-md-8">
+                                                    <label>English level</label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <mat-select placeholder="" formControlName="english_level">
+                                                        <mat-option value="BASIC" >BASIC</mat-option>
+                                                        <mat-option value="Conversational" >Conversational</mat-option>
+                                                        <mat-option value="Fluent" >Fluent</mat-option>
+                                                        <mat-option value="Native" >Native or Bilingue</mat-option>
+                                                    </mat-select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 row">
+                                                <div class="col-md-8">
+                                                    <label>Available working hours each week</label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <mat-select placeholder="" formControlName="available_works">
+                                                        <mat-option value="Less_20" >Less than 20 hours per week</mat-option>
+                                                        <mat-option value="40" >40 hours per week</mat-option>
+                                                        <mat-option value="over_40" >more than 40 hours per week</mat-option>
+                                                    </mat-select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="kt-form__group">
+                                        <h3>Equipment</h3>
+                                        <br>	
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <mat-checkbox formControlName="have_computer">Laptop / Computer</mat-checkbox>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <mat-checkbox formControlName="have_monitor">Extra Monitor</mat-checkbox>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <mat-checkbox formControlName="have_headset">Headset</mat-checkbox>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <mat-checkbox formControlName="have_ethernet">Ethernet Adapther</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                    <div class="kt-form__group">
+                                        <h3>Visit Details</h3>
+                                        <br>	
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <mat-checkbox formControlName="visit">Visit to Employee</mat-checkbox>
+                                            </div>
+                                            <div class="col-md-3 kt-margin-bottom-10-mobile">
+                                                <mat-form-field class="mat-form-field-fluid">
+                                                    <input matInput [matDatepicker]="picker1" formControlName="approve_date" placeholder="Approval Date">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker1></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>    
+                                        </div>
+                                        <div class="row gallery">
+                                            <div class="col-md-2 show-image" *ngFor="let photo of employee.photos" >
+                                                <div [ngStyle]="{'background-image': 'url(' + hostingUrl + 'storage/' + photo.path + ')'}" class="image-background">
+                                                </div>
+                                                <div class="overlay" (click)="openImage(photo.path)"></div>
+                                                <div class="actions-center">
+                                                    <button mat-icon-button color="warn" (click)="removeImage(photo)" matTooltip="delete photo" >
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+                                                    <br>
+                                                    <button mat-icon-button color="primary" (click)="openImage(photo.path)" matTooltip="view photo">
+                                                        <mat-icon>visibility</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 new">
+                                                <mat-form-field>
+                                                    <ngx-mat-file-input formControlName="photo" placeholder="Photo Upload" multiple accept="image/x-png,image/gif,image/jpeg"></ngx-mat-file-input>
+                                                    <mat-error *ngIf="isControlHasError('photo','type')">
+                                                        Photo is
+                                                        <strong>invalid</strong>
+                                                    </mat-error>
+                                                    <mat-error *ngIf="isControlHasError('photo','error')">
+                                                        {{photo_error}}
+                                                    </mat-error>                
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </div>
+                            </form>
+                        </div>
+    
+                        <!--end::Form-->
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Time-Off" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-timeoff-list [employeeId$]="employeeId$"></kt-timeoff-list>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Payments" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-invoice-member-list [employeeId$]="employeeId$"></kt-invoice-member-list>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Comissions" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-commission-group-list [employeeId$]="employeeId$"></kt-commission-group-list>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Documents" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-document-list [employee$]="employee$"></kt-document-list>                        
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Assets" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-employee-asset-assign-list [employee$]="employee$"></kt-employee-asset-assign-list>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Employeement" [disabled]="!employee || !employee.id">
+                    <ng-template matTabContent>
+                        <kt-employee-contract-list [employee$]="employee$"></kt-employee-contract-list>
+                    </ng-template>
+                </mat-tab>
+            </mat-tab-group>
+        </kt-portlet-body>
+    </kt-portlet>
+    
